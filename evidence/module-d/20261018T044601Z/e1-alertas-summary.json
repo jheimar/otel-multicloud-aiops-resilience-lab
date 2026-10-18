@@ -1,0 +1,18 @@
+{
+  "scenario": "E1",
+  "experiment_start_utc": "2026-10-18T04:47:20Z",
+  "windows_observed": 6,
+  "requests_observed": 150,
+  "http_5xx_observed": 0,
+  "error_rate_observed": 0.0,
+  "max_window_p99_ms": 566.13,
+  "illustrative_availability_slo": 0.99,
+  "illustrative_error_budget_use_ratio": 0.0,
+  "mttd_seconds": 10.52,
+  "target_mttd_seconds": 120,
+  "mttd_target_met": true,
+  "static_or_alert_windows": 6,
+  "correlated_and_alert_windows": 0,
+  "latency_only_alert_windows": 6,
+  "method_limitation": "short synthetic traffic, empirical p99 and local experimental detector; not Cloud Monitoring anomaly service; static OR comparator only"
+}
