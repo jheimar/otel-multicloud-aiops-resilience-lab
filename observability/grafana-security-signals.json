@@ -1,0 +1,103 @@
+{
+  "uid": "security-signals-gcp",
+  "title": "Señales de seguridad — GCP (plantilla parcial)",
+  "description": "Plantilla con consultas Loki. Pendiente de importar y verificar fuentes de CVE y VPC Flow Logs.",
+  "schemaVersion": 39,
+  "tags": [
+    "observability",
+    "security",
+    "gcp",
+    "sandbox"
+  ],
+  "timezone": "utc",
+  "editable": true,
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Intentos de autenticación fallida (logs)",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(count_over_time({job=\"kubernetes-pods\"} |~ \"(?i)(unauthorized|login failed|authentication failed|\\\\b401\\\\b|\\\\b403\\\\b)\" [5m]))",
+          "queryType": "range"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Errores de aplicación (logs)",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(count_over_time({job=\"kubernetes-pods\"} |~ \"(?i)(exception|error|http 5[0-9][0-9])\" [5m]))",
+          "queryType": "range"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "logs",
+      "title": "Logs de los pods — investigación",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 9,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{job=\"kubernetes-pods\"} |~ \"(?i)(error|warn|denied|unauthorized)\"",
+          "queryType": "range"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "text",
+      "title": "Cobertura pendiente: CVE y flujos multicloud",
+      "gridPos": {
+        "x": 12,
+        "y": 9,
+        "w": 12,
+        "h": 9
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "**Pendiente:** integrar VPC Flow Logs de GCP/AWS y hallazgos de SCC/Hub como fuentes de datos para el dashboard. Esta plantilla no demuestra métricas de flujos o CVE activos. Los paneles vacíos no equivalen a 0 incidentes."
+      }
+    }
+  ],
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "refresh": "15s",
+  "version": 1
+}

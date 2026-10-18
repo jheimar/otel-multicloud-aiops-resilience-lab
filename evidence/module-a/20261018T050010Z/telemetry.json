@@ -1,0 +1,39 @@
+{
+  "timestamp_utc": "2026-10-18T05:00:12.207779+00:00",
+  "source": "GKE real service endpoints",
+  "application": {
+    "status": "ok",
+    "trace_id": "58c31b3cff7d92f20151c22bd1c1ab23",
+    "data_backend": "appdb",
+    "data_probe": 1
+  },
+  "tracing": {
+    "status": "found",
+    "trace_id": "58c31b3cff7d92f20151c22bd1c1ab23",
+    "span_count": 12,
+    "services": [
+      "service-a",
+      "service-b"
+    ]
+  },
+  "metrics": {
+    "status": "api_ok",
+    "named_series_found": [
+      "data_db_duration_seconds_bucket",
+      "data_db_duration_seconds_count",
+      "data_db_duration_seconds_sum",
+      "data_request_duration_seconds_bucket",
+      "data_request_duration_seconds_count",
+      "data_request_duration_seconds_sum",
+      "data_requests_total",
+      "http_server_duration_milliseconds_bucket",
+      "http_server_duration_milliseconds_count",
+      "http_server_duration_milliseconds_sum"
+    ],
+    "candidate_count": 10
+  },
+  "logs": {
+    "status": "unavailable",
+    "error_class": "HTTPError"
+  }
+}

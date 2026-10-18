@@ -1,0 +1,1 @@
+{"subnetwork":"default","region":"us-central1","project":"project-138a5e79-5342-4c60-94f","flow_logs_status":"enabled_by_script","aggregation_interval_if_new":"1m","secondary_sample_if_new":0.1,"caveat":"GKE namespace no equivale a subred exclusiva. Los logs pueden representar otros workloads. Cloud Logging puede generar cargos."}

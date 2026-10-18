@@ -1,0 +1,8 @@
+{
+  "source": "GCP Cloud Logging - sampled VPC Flow Logs",
+  "collection": "actual_query",
+  "entries_returned": 0,
+  "oldest_utc": null,
+  "newest_utc": null,
+  "caveat": "Las entradas no demuestran necesariamente tráfico exclusivo del experimento; no se publican direcciones IP."
+}
