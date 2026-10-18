@@ -1,0 +1,6 @@
+{"timestamp": "2026-10-18T04:46:10.384949+00:00", "scenario": "e2_baseline", "window": 1, "total": 25, "errors": 0, "p99_ms": 92.98, "trace_id": "fb5fed13971ef1031a43519af5f2f048"}
+{"timestamp": "2026-10-18T04:46:11.667798+00:00", "scenario": "e2_baseline", "window": 2, "total": 25, "errors": 0, "p99_ms": 17.88, "trace_id": "eb4d5c13461d5aff1c66fd9593f9e7f6"}
+{"timestamp": "2026-10-18T04:46:12.943065+00:00", "scenario": "e2_baseline", "window": 3, "total": 25, "errors": 0, "p99_ms": 16.92, "trace_id": "a9b856b2d7c6f254e4d6679179f061a3"}
+{"timestamp": "2026-10-18T04:46:14.271460+00:00", "scenario": "e2_baseline", "window": 4, "total": 25, "errors": 0, "p99_ms": 61.45, "trace_id": "9af06dbede2c9af903a80fb709352f4a"}
+{"timestamp": "2026-10-18T04:46:15.584086+00:00", "scenario": "e2_baseline", "window": 5, "total": 25, "errors": 0, "p99_ms": 32.63, "trace_id": "097c11631a03bc0b758e57fb75ea8d21"}
+{"timestamp": "2026-10-18T04:46:16.873740+00:00", "scenario": "e2_baseline", "window": 6, "total": 25, "errors": 0, "p99_ms": 22.2, "trace_id": "529d8b26aa39ef861ade8357863603ba"}
