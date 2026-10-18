@@ -1,6 +1,6 @@
 # Arquitectura de Referencia del Sistema de Observabilidad Multicloud
 **Laboratorio Integrador: Observabilidad End-to-End, AIOps y Resiliencia en GCP y AWS**  
-**Universidad de La Sabana — Maestría en Gestión y Operaciones Cloud / Observabilidad**  
+**Documento de Diseño y Especificación Técnica de Arquitectura SRE**  
 **Repositorio:** `otel-multicloud-aiops-resilience-lab` · **Tag:** `v1.0` · **Versión:** Final
 
 ---

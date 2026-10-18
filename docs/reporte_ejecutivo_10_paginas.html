@@ -251,7 +251,7 @@
   <div class="page">
     <div class="page-content">
       <div class="cover-container">
-        <div class="cover-badge">Universidad de La Sabana · Maestría en Cloud & Operaciones</div>
+        <div class="cover-badge">Ingeniería Cloud & Operaciones SRE · Enterprise Resilience</div>
         <div class="cover-title">Sistema de Observabilidad End-to-End, AIOps y Resiliencia en Ambientes Multicloud (GCP y AWS)</div>
         <div class="cover-subtitle">Reporte Técnico Ejecutivo y Análisis de Madurez Operacional Basado en Evidencias</div>
         <div class="cover-divider"></div>
@@ -259,12 +259,12 @@
         <div class="cover-meta">
           <table style="width:100%; border:none;">
             <tr>
-              <td style="width:30%; font-weight:700; color:#334155;">Asignatura:</td>
-              <td>Observabilidad Avanzada y SRE (Laboratorio Integrador)</td>
+              <td style="width:30%; font-weight:700; color:#334155;">Especialidad / Dominio:</td>
+              <td>Observabilidad Avanzada, AIOps y SRE (Laboratorio Integrador)</td>
             </tr>
             <tr>
-              <td style="font-weight:700; color:#334155;">Estudiante / Autor:</td>
-              <td>Johan Prieto (Ingeniero de Plataforma y SRE)</td>
+              <td style="font-weight:700; color:#334155;">Ingeniero / Autor:</td>
+              <td>Johan Prieto (Cloud Platform Engineer & SRE Lead)</td>
             </tr>
             <tr>
               <td style="font-weight:700; color:#334155;">Repositorio Oficial:</td>
@@ -286,7 +286,7 @@
       </div>
     </div>
     <div class="footer-bar">
-      <span>Universidad de La Sabana · Reporte Ejecutivo v1.0</span>
+      <span>Laboratorio de Observabilidad Multicloud · Reporte Ejecutivo v1.0</span>
       <span>Página 1 de 10</span>
     </div>
   </div>
@@ -640,7 +640,7 @@
         <strong>Hallazgos de Seguridad Gestionados y Remediación (Módulo C):</strong>
         <ul style="font-size:7.8pt; margin-bottom:0;">
           <li><strong>Escaneo Automatizado de Vulnerabilidades (Trivy CNCF):</strong> Se ejecutó auditoría exhaustiva sobre contenedores e IaC (<code>evidence/module-c/multicloud-security-findings.json</code>), clasificando 41 hallazgos (<strong>0 Críticos</strong>, 12 Altos, 21 Medios, 8 Bajos) remediando permisos excesivos y versiones de base.</li>
-          <li><strong>GCP SCC & AWS Security Hub Boundary:</strong> En suscripciones académicas/sandbox sin permisos delegados de Organización para SCC Premium/Security Hub, la auditoría se complementó con análisis estático Trivy y monitoreo de rechazos (<code>REJECT</code>) en <strong>AWS VPC Flow Logs</strong> (<code>fl-063021b836eebcb40</code> en <code>us-east-2</code>) y GCP Cloud Logging.</li>
+          <li><strong>GCP SCC & AWS Security Hub Boundary:</strong> En suscripciones de laboratorio/sandbox sin permisos delegados de Organización para SCC Premium/Security Hub, la auditoría se complementó con análisis estático Trivy y monitoreo de rechazos (<code>REJECT</code>) en <strong>AWS VPC Flow Logs</strong> (<code>fl-063021b836eebcb40</code> en <code>us-east-2</code>) y GCP Cloud Logging.</li>
           <li><strong>Protocolo de Rotación de Credenciales (NIST SP 800-53 IA-5):</strong> Se invalidaron las claves por defecto en Cloud SQL y AWS RDS, generando secretos aleatorios de 32 caracteres inyectados en <code>otel-lab-secret</code>. Las variables IaC exigen inyección dinámica (<code>docs/SECURITY-CREDENTIALS-ROTATION.md</code>).</li>
           <li><strong>Alarmas Gestionadas Activas:</strong> CloudWatch Alarms (<code>High CPU</code> y <code>Low Memory</code>) evaluando datos en estado <code>OK</code> con notificaciones SNS (<code>otel-aws-aiops-alerts</code>), y Cloud Monitoring Policy en GKE (<code>8026746357520380235</code>).</li>
         </ul>
@@ -911,7 +911,7 @@
             <span>Clasificación: <strong>Nivel Definido / En transición a Medido e Integrado (31 / 8 = 3.875)</strong></span>
           </div>
           <div style="font-size:8pt; color:#334155;">
-            Cumple íntegramente la totalidad de los requisitos técnicos multicloud de la maestría.
+            Cumple íntegramente la totalidad de los requisitos técnicos del laboratorio multicloud.
           </div>
         </div>
       </div>

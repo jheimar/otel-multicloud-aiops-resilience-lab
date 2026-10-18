@@ -1,6 +1,6 @@
 # Blueprint de Madurez de Observabilidad y Hoja de Ruta Estratégica
 **Laboratorio Integrador: Sistema de Observabilidad End-to-End con AIOps y Resiliencia en GCP y AWS**  
-**Universidad de La Sabana — Maestría en Gestión y Operaciones Cloud / Observabilidad**  
+**Marco de Referencia de Madurez SRE & Cloud Engineering Operations**  
 **Fecha:** Octubre 2026 · **Versión:** 1.0 Final · **Repositorio:** `otel-multicloud-aiops-resilience-lab`
 
 ---

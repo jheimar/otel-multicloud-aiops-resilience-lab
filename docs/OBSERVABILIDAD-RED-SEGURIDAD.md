@@ -1,6 +1,6 @@
 # Observabilidad de Red y Seguridad Multicloud (GCP y AWS)
 **Laboratorio Integrador de Observabilidad, AIOps y Resiliencia**  
-**Universidad de La Sabana** · **Repositorio:** `otel-multicloud-aiops-resilience-lab` · **Tag:** `v1.0`
+**Especificación Técnica de Red y Seguridad DevSecOps** · **Repositorio:** `otel-multicloud-aiops-resilience-lab` · **Tag:** `v1.0`
 
 ---
 

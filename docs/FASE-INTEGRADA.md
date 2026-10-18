@@ -1,6 +1,6 @@
 # Fase Integrada — Despliegue, Validación y Cumplimiento de Entregables
 **Laboratorio Integrador de Observabilidad, AIOps y Resiliencia en GCP y AWS**  
-**Universidad de La Sabana** · **Repositorio:** `otel-multicloud-aiops-resilience-lab` · **Tag:** `v1.0`
+**Documento de Control y Cumplimiento de Entregables** · **Repositorio:** `otel-multicloud-aiops-resilience-lab` · **Tag:** `v1.0`
 
 ---
 

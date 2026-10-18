@@ -1,6 +1,6 @@
 # Galería de Evidencias Visuales y Capturas Operacionales (Screenshots)
 **Laboratorio Integrador: Sistema de Observabilidad End-to-End con AIOps y Resiliencia en GCP y AWS**  
-**Universidad de La Sabana — Maestría en Gestión y Operaciones Cloud / Observabilidad**  
+**Catálogo de Evidencias Operacionales y Métricas de Validación**  
 **Repositorio:** `otel-multicloud-aiops-resilience-lab` · **Tag:** `v1.0` · **Fecha:** Octubre 2026
 
 Este directorio consolida las capturas de pantalla de alta resolución obtenidas directamente desde las consolas e interfaces gráficas del laboratorio desplegado en vivo, acreditando el cumplimiento de la rúbrica oficial.

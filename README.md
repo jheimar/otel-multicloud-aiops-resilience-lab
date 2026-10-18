@@ -1,5 +1,5 @@
 # Sistema de Observabilidad End-to-End, AIOps y Resiliencia Multicloud
-**Universidad de La Sabana — Maestría en Gestión y Operaciones Cloud / Observabilidad**  
+**Laboratorio Técnico Integrador — Gestión y Operaciones Cloud / SRE & Observabilidad**  
 **Versión de Entrega:** `v1.0` · **Estado Global:** 100 % de Requisitos e IaC Implementados y Validados
 
 Repositorio oficial del laboratorio integrador de observabilidad avanzada, detección estadística inteligente (AIOps), observabilidad de red/seguridad y resiliencia con Chaos Engineering en **Google Cloud Platform (GCP)** y **Amazon Web Services (AWS)**.

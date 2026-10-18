@@ -1,6 +1,6 @@
 # Data Service — Contrato, Alcance y Operación Multicloud
 **Laboratorio Integrador: Observabilidad End-to-End en GCP y AWS**  
-**Universidad de La Sabana** · **Repositorio:** `otel-multicloud-aiops-resilience-lab`
+**Especificación Técnica de Microservicio de Datos** · **Repositorio:** `otel-multicloud-aiops-resilience-lab`
 
 ---
 
