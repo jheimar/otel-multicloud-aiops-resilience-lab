@@ -1,0 +1,21 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: gameday-service-b-delay
+  namespace: otel-lab
+  labels:
+    app.kubernetes.io/part-of: otel-chaos-gameday
+spec:
+  action: delay
+  mode: one
+  selector:
+    namespaces:
+      - otel-lab
+    labelSelectors:
+      app: service-b
+  delay:
+    latency: 200ms
+    jitter: 10ms
+    correlation: '100'
+  direction: to
+  duration: 120s

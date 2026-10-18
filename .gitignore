@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+config.env
+*.tfstate
+*.tfstate.*
+*.tfplan
+**/.terraform/
+terraform.tfvars
+*.auto.tfvars
+*.pem
+*.key
+*.kubeconfig
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
