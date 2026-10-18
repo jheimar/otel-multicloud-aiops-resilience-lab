@@ -1,0 +1,19 @@
+{
+  "total_records": 20,
+  "north_south_flows": 5,
+  "east_west_flows": 15,
+  "bytes_north_south": 1120040,
+  "bytes_east_west": 612260,
+  "anomalies_detected": [
+    {
+      "rule": "HIGH_VOLUME_NORTH_SOUTH_OUTBOUND",
+      "src_ip": "10.128.0.4",
+      "dest_ip": "173.194.195.95",
+      "dest_port": 443,
+      "bytes_sent": 744320,
+      "timestamp": "2026-10-18T14:40:16.273983452Z",
+      "severity": "WARNING",
+      "description": "Flujo Norte-Sur supero el umbral de 500 KB (observado: 744320 bytes)"
+    }
+  ]
+}

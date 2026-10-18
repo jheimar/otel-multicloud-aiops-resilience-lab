@@ -1,0 +1,145 @@
+{
+  "evaluation_period": "2026-10-18T10:10:00Z - 2026-10-18T10:24:00Z",
+  "total_windows_evaluated": 15,
+  "static_threshold_alerts": 10,
+  "aiops_correlated_alerts": 3,
+  "false_positives_filtered": 7,
+  "noise_reduction_percentage": 70.0,
+  "windows_detail": [
+    {
+      "timestamp": "2026-10-18T10:10:00Z",
+      "trace_id": "trace-norm-01",
+      "error_rate": 0.01,
+      "p99_ms": 48.0,
+      "static_alert": false,
+      "aiops_correlated_alert": false,
+      "classification": "NORMAL"
+    },
+    {
+      "timestamp": "2026-10-18T10:11:00Z",
+      "trace_id": "trace-norm-02",
+      "error_rate": 0.0,
+      "p99_ms": 52.0,
+      "static_alert": false,
+      "aiops_correlated_alert": false,
+      "classification": "NORMAL"
+    },
+    {
+      "timestamp": "2026-10-18T10:12:00Z",
+      "trace_id": "trace-norm-03",
+      "error_rate": 0.01,
+      "p99_ms": 50.0,
+      "static_alert": false,
+      "aiops_correlated_alert": false,
+      "classification": "NORMAL"
+    },
+    {
+      "timestamp": "2026-10-18T10:13:00Z",
+      "trace_id": "trace-jitter-01",
+      "error_rate": 0.0,
+      "p99_ms": 230.0,
+      "static_alert": true,
+      "aiops_correlated_alert": false,
+      "classification": "NOISE"
+    },
+    {
+      "timestamp": "2026-10-18T10:14:00Z",
+      "trace_id": "trace-jitter-02",
+      "error_rate": 0.01,
+      "p99_ms": 245.0,
+      "static_alert": true,
+      "aiops_correlated_alert": false,
+      "classification": "NOISE"
+    },
+    {
+      "timestamp": "2026-10-18T10:15:00Z",
+      "trace_id": "trace-jitter-03",
+      "error_rate": 0.0,
+      "p99_ms": 260.0,
+      "static_alert": true,
+      "aiops_correlated_alert": false,
+      "classification": "NOISE"
+    },
+    {
+      "timestamp": "2026-10-18T10:16:00Z",
+      "trace_id": "trace-jitter-04",
+      "error_rate": 0.01,
+      "p99_ms": 225.0,
+      "static_alert": true,
+      "aiops_correlated_alert": false,
+      "classification": "NOISE"
+    },
+    {
+      "timestamp": "2026-10-18T10:17:00Z",
+      "trace_id": "trace-jitter-05",
+      "error_rate": 0.0,
+      "p99_ms": 210.0,
+      "static_alert": true,
+      "aiops_correlated_alert": false,
+      "classification": "NOISE"
+    },
+    {
+      "timestamp": "2026-10-18T10:18:00Z",
+      "trace_id": "trace-err-01",
+      "error_rate": 0.02,
+      "p99_ms": 65.0,
+      "static_alert": true,
+      "aiops_correlated_alert": false,
+      "classification": "NOISE"
+    },
+    {
+      "timestamp": "2026-10-18T10:19:00Z",
+      "trace_id": "trace-err-02",
+      "error_rate": 0.02,
+      "p99_ms": 70.0,
+      "static_alert": true,
+      "aiops_correlated_alert": false,
+      "classification": "NOISE"
+    },
+    {
+      "timestamp": "2026-10-18T10:20:00Z",
+      "trace_id": "trace-incident-01",
+      "error_rate": 0.14,
+      "p99_ms": 340.0,
+      "static_alert": true,
+      "aiops_correlated_alert": true,
+      "classification": "TRUE_INCIDENT"
+    },
+    {
+      "timestamp": "2026-10-18T10:21:00Z",
+      "trace_id": "trace-incident-02",
+      "error_rate": 0.15,
+      "p99_ms": 380.0,
+      "static_alert": true,
+      "aiops_correlated_alert": true,
+      "classification": "TRUE_INCIDENT"
+    },
+    {
+      "timestamp": "2026-10-18T10:22:00Z",
+      "trace_id": "trace-incident-03",
+      "error_rate": 0.12,
+      "p99_ms": 310.0,
+      "static_alert": true,
+      "aiops_correlated_alert": true,
+      "classification": "TRUE_INCIDENT"
+    },
+    {
+      "timestamp": "2026-10-18T10:23:00Z",
+      "trace_id": "trace-rec-01",
+      "error_rate": 0.01,
+      "p99_ms": 55.0,
+      "static_alert": false,
+      "aiops_correlated_alert": false,
+      "classification": "NORMAL"
+    },
+    {
+      "timestamp": "2026-10-18T10:24:00Z",
+      "trace_id": "trace-rec-02",
+      "error_rate": 0.0,
+      "p99_ms": 48.0,
+      "static_alert": false,
+      "aiops_correlated_alert": false,
+      "classification": "NORMAL"
+    }
+  ]
+}

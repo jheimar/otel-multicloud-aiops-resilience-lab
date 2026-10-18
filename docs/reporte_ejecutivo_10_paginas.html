@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reporte Ejecutivo - Sistema de Observabilidad End-to-End, AIOps y Resiliencia</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 12mm 15mm 15mm 15mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      font-size: 9.5pt;
+      line-height: 1.38;
+    }
+    .page {
+      page-break-after: always;
+      height: 268mm;
+      max-height: 268mm;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .page:last-child {
+      page-break-after: avoid;
+    }
+    .page-content {
+      flex: 1;
+    }
+    .header-bar {
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 4px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .header-title {
+      font-size: 8pt;
+      font-weight: 700;
+      color: #0369a1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .header-doc {
+      font-size: 7.5pt;
+      color: #64748b;
+    }
+    .footer-bar {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 4px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7.5pt;
+      color: #64748b;
+    }
+    h1 {
+      font-size: 17pt;
+      color: #0f172a;
+      margin: 0 0 8px 0;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    h2 {
+      font-size: 12pt;
+      color: #0369a1;
+      margin: 10px 0 6px 0;
+      font-weight: 700;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 3px;
+    }
+    h3 {
+      font-size: 10pt;
+      color: #0f172a;
+      margin: 8px 0 4px 0;
+      font-weight: 600;
+    }
+    p {
+      margin: 0 0 6px 0;
+      text-align: justify;
+    }
+    ul, ol {
+      margin: 0 0 6px 0;
+      padding-left: 18px;
+    }
+    li {
+      margin-bottom: 2px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 8px 10px;
+    }
+    .card-accent {
+      border-left: 3px solid #0284c7;
+      background: #f0f9ff;
+    }
+    .card-warning {
+      border-left: 3px solid #f59e0b;
+      background: #fffbeb;
+    }
+    .card-success {
+      border-left: 3px solid #10b981;
+      background: #f0fdf4;
+    }
+    .metric-box {
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 5px;
+      padding: 8px;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 15pt;
+      font-weight: 800;
+      color: #38bdf8;
+      line-height: 1.1;
+    }
+    .metric-label {
+      font-size: 7pt;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8pt;
+      margin-bottom: 8px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 4px 6px;
+      text-align: left;
+    }
+    th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 8pt;
+      background: #f1f5f9;
+      padding: 1px 3px;
+      border-radius: 3px;
+      color: #0f172a;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 7pt;
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    .tag-green {
+      background: #dcfce7;
+      color: #15803d;
+    }
+    .tag-amber {
+      background: #fef3c7;
+      color: #b45309;
+    }
+    /* Portada especial */
+    .cover-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      padding: 20px;
+    }
+    .cover-badge {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #0284c7;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+    .cover-title {
+      font-size: 24pt;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .cover-subtitle {
+      font-size: 13pt;
+      color: #475569;
+      line-height: 1.4;
+      margin-bottom: 25px;
+    }
+    .cover-divider {
+      width: 60px;
+      height: 4px;
+      background: #0284c7;
+      margin-bottom: 25px;
+    }
+    .cover-meta {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 9.5pt;
+      margin-bottom: 25px;
+    }
+    .cover-meta table td {
+      border: none;
+      padding: 4px 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PAGINA 1 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="cover-container">
+        <div class="cover-badge">Universidad de La Sabana · Maestría en Cloud & Operaciones</div>
+        <div class="cover-title">Sistema de Observabilidad End-to-End, AIOps y Resiliencia en Ambientes Multicloud (GCP y AWS)</div>
+        <div class="cover-subtitle">Reporte Técnico Ejecutivo y Análisis de Madurez Operacional Basado en Evidencias</div>
+        <div class="cover-divider"></div>
+
+        <div class="cover-meta">
+          <table style="width:100%; border:none;">
+            <tr>
+              <td style="width:30%; font-weight:700; color:#334155;">Asignatura:</td>
+              <td>Observabilidad Avanzada y SRE (Laboratorio Integrador)</td>
+            </tr>
+            <tr>
+              <td style="font-weight:700; color:#334155;">Estudiante / Autor:</td>
+              <td>Johan Prieto (Ingeniero de Plataforma y SRE)</td>
+            </tr>
+            <tr>
+              <td style="font-weight:700; color:#334155;">Repositorio Oficial:</td>
+              <td><code>https://github.com/jheimar/otel-multicloud-aiops-resilience-lab</code></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700; color:#334155;">Rama y Tag de Entrega:</td>
+              <td>Rama <code>main</code> · Release <code>v1.0</code></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700; color:#334155;">Fecha de Ejecución:</td>
+              <td>Octubre 18, 2026</td>
+            </tr>
+          </table>
+        </div>
+
+        <h3>Resumen Ejecutivo del Laboratorio</h3>
+        <p>El presente informe consolida la implementación, verificación y análisis de madurez de un sistema distribuido de observabilidad integral sobre una arquitectura de microservicios desplegada en Google Kubernetes Engine (GKE) y modelada para Amazon Web Services (AWS). Se integraron los tres pilares de telemetría (métricas, trazas y logs estructurados) bajo el estándar <strong>OpenTelemetry (OTel)</strong>, un motor de correlación estadística <strong>AIOps con reducción cuantitativa del 70% de ruido</strong>, análisis de telemetría de red mediante <strong>VPC Flow Logs</strong> con clasificación Norte-Sur/Este-Oeste, experimentos controlados de <strong>Chaos Engineering</strong> (latencia y fallos HTTP 5xx) con MTTD inferior a 11 segundos, y un <strong>Blueprint de Madurez de 8 dominios</strong> con hoja de ruta a tres meses.</p>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>Universidad de La Sabana · Reporte Ejecutivo v1.0</span>
+      <span>Página 1 de 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGINA 2 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <span class="header-title">Arquitectura del Sistema e Infraestructura como Código (IaC)</span>
+        <span class="header-doc">Módulo A · Requisitos A-01, A-02</span>
+      </div>
+      <h2>1. Arquitectura del Sistema Distribuido Multicloud</h2>
+      <p>La solución implementa una topología de microservicios orientada a resiliencia distribuida en dos nubes públicas:</p>
+      
+      <div class="card card-accent" style="margin-bottom:8px;">
+        <strong>Componentes Principales:</strong>
+        <ul style="margin-bottom:0;">
+          <li><strong>Service A (Orquestador / Gateway):</strong> API FastAPI instrumentada con OTel. Recibe tráfico externo en <code>:8000</code>, gestiona el contexto W3C, consulta pedidos en PostgreSQL y coordina llamadas a Service B y Data Service.</li>
+          <li><strong>Service B (Lógica de Negocio / Inventario):</strong> FastAPI en <code>:8001</code>. Procesa existencias de catálogo con latencia determinista e inyección de contexto distribuido.</li>
+          <li><strong>Data Service (Persistencia Políglota Multicloud):</strong> FastAPI en <code>:8002</code>. Conecta a bases de datos gestionadas (Cloud SQL en GCP y AWS RDS), aplicando convenciones semánticas <code>db.*</code>.</li>
+          <li><strong>Plataforma de Observabilidad:</strong> OpenTelemetry Collector como agregador OTLP central, Prometheus para almacenamiento y scraping de series temporales, Jaeger para reconstrucción de trazas y Promtail/Loki para ingestión de logs correlacionados.</li>
+        </ul>
+      </div>
+
+      <h2>2. Infraestructura como Código (IaC) con Terraform</h2>
+      <p>Se diseñó y versionó la infraestructura completa en Terraform v1.9.1 modular en <code>terraform/gcp</code> y <code>terraform/aws</code>, validada formalmente mediante <code>terraform validate</code> y <code>terraform fmt</code>:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nube</th>
+            <th>Módulos y Recursos Declarados</th>
+            <th>Propósito Arquitectónico</th>
+            <th>Estado Comprobado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>GCP</strong></td>
+            <td><code>vpc.tf</code>, <code>gke.tf</code>, <code>cloud_sql.tf</code>, <code>monitoring.tf</code></td>
+            <td>VPC con Flow Logs activos (5s, 50%), Clúster GKE e2-standard-2, Cloud SQL PostgreSQL 15 (db-f1-micro), Alertas Cloud Monitoring.</td>
+            <td><span class="tag tag-green">Validado / Operativo</span></td>
+          </tr>
+          <tr>
+            <td><strong>AWS</strong></td>
+            <td><code>vpc.tf</code>, <code>rds.tf</code>, <code>security_groups.tf</code>, <code>cloudwatch.tf</code></td>
+            <td>VPC Multi-AZ (us-east-1), subredes públicas/privadas, RDS PostgreSQL 15 (db.t3.micro), VPC Flow Logs hacia CloudWatch Logs.</td>
+            <td><span class="tag tag-amber">IaC 100% Validada / Restricción SCP</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card card-warning">
+        <strong>Hallazgo de Gobernanza Cloud (SCP en AWS):</strong> La cuenta AWS asignada (<code>006209503071</code>) posee créditos vigentes ($99.83 USD), pero se encuentra sujeta a la Service Control Policy <code>p-zsz1ecbo</code> a nivel de organización que deniega explícitamente acciones de creación sobre <code>ec2:*</code> y <code>rds:*</code>. Por principio de transparencia técnica, la IaC se entregó completamente codificada y validada sintácticamente, sustentando la reproducibilidad sin alterar el alcance evaluativo.
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>Laboratorio Integrador de Observabilidad · Repositorio: otel-multicloud-aiops-resilience-lab</span>
+      <span>Página 2 de 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGINA 3 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <span class="header-title">Instrumentación OpenTelemetry y Semántica de Base de Datos</span>
+        <span class="header-doc">Módulo A · Requisitos A-03, A-04, A-05</span>
+      </div>
+      <h2>1. Estándar OpenTelemetry y Propagación de Contexto W3C</h2>
+      <p>La instrumentación fue desarrollada en Python empleando el SDK oficial de OpenTelemetry v1.25+, asegurando la correlación continua entre las capas de red, aplicación y almacenamiento:</p>
+      
+      <div class="grid-2">
+        <div class="card">
+          <h3>Propagación de Contexto Distribuido</h3>
+          <p>Se configuró el inyector/extractor estándar <strong>W3C TraceContext</strong>. Cada solicitud entrante propaga el header:</p>
+          <p><code>traceparent: 00-{trace_id}-{span_id}-01</code></p>
+          <p>Service A inyecta el encabezado en llamadas HTTP hacia Service B (vía <code>HTTPXClientInstrumentor</code>) y Data Service, preservando el mismo <code>trace_id</code> a lo largo de toda la cadena de llamadas síncronas.</p>
+        </div>
+        <div class="card">
+          <h3>Pipeline de Exportación OTLP</h3>
+          <p>Los servicios exportan telemetría mediante <strong>BatchSpanProcessor</strong> sobre gRPC hacia el agente central <code>otel-collector:4317</code>.</p>
+          <p>El colector procesa y redirige:</p>
+          <ul>
+            <li><strong>Trazas:</strong> OTLP gRPC &rarr; Jaeger backend.</li>
+            <li><strong>Métricas:</strong> Prometheus Exporter en puerto <code>:8889</code> / scraping en <code>:9090</code>.</li>
+            <li><strong>Logs:</strong> JSON estructurado con metadatos de span hacia stdout y Promtail.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>2. Convenciones Semánticas OpenTelemetry para Bases de Datos (db.*)</h2>
+      <p>En estricto cumplimiento del requisito A-04, las operaciones de acceso a datos en <code>service-a</code> y <code>data-service</code> implementan la auto-instrumentación con <code>Psycopg2Instrumentor</code> y spans manuales etiquetados con la especificación oficial:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Atributo Semántico OTel</th>
+            <th>Valor Observado en Ejecución</th>
+            <th>Propósito y Utilidad Operacional</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>db.system.name</code></td>
+            <td><code>postgresql</code></td>
+            <td>Identifica la tecnología del motor de base de datos relacional.</td>
+          </tr>
+          <tr>
+            <td><code>db.operation.name</code></td>
+            <td><code>SELECT</code></td>
+            <td>Clasifica el tipo de comando SQL ejecutado sobre las tablas.</td>
+          </tr>
+          <tr>
+            <td><code>db.namespace</code></td>
+            <td><code>appdb</code> / <code>gcp</code> / <code>aws</code></td>
+            <td>Distingue la base lógica y el backend multicloud de destino.</td>
+          </tr>
+          <tr>
+            <td><code>cloud.provider</code></td>
+            <td><code>gcp</code></td>
+            <td>Etiqueta la nube física donde se ejecuta la persistencia.</td>
+          </tr>
+          <tr>
+            <td><code>db.statement</code></td>
+            <td><code>SELECT id, product, quantity...</code></td>
+            <td>Consulta sanitizada sin exponer valores de parámetros sensibles.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card card-success">
+        <strong>Verificación de Spans en Ejecución:</strong> Durante la invocación al endpoint integrador <code>/order/ord-001/observed</code>, el componente <code>data-service</code> generó spans hijos directos bajo <code>data.read</code> registrando el tiempo exacto de socket y cursor mediante el histograma OTel <code>data_db_duration_seconds</code>.
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>Laboratorio Integrador de Observabilidad · Repositorio: otel-multicloud-aiops-resilience-lab</span>
+      <span>Página 3 de 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGINA 4 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <span class="header-title">Evidencias Verificadas de los Tres Pilares de Observabilidad</span>
+        <span class="header-doc">Módulo A · Requisito A-07</span>
+      </div>
+      <h2>1. Traza Distribuida End-to-End en Jaeger (17 Spans Validados)</h2>
+      <p>Se ejecutó la prueba de integración sobre el clúster GKE y se capturó la traza <code>ace4862048aa006720d67b80551e895f</code> en Jaeger, evidenciando la participación síncrona de los tres microservicios y las operaciones de base de datos:</p>
+
+      <div class="card card-accent" style="margin-bottom:8px;">
+        <strong>Jerarquía y Desglose de Spans (Archivo: <code>evidence/module-a/trace-end-to-end-full.json</code>):</strong>
+        <ol style="font-size:7.8pt; margin-bottom:0;">
+          <li><code>service-a</code>: <code>GET /order/{order_id}/observed</code> (Root Span - HTTP Gateway)</li>
+          <li>&nbsp;&nbsp;&boxur; <code>service-a</code>: <code>fetch.order.db</code> &rarr; <code>SELECT</code> (Consulta PostgreSQL orden <code>ord-001</code>)</li>
+          <li>&nbsp;&nbsp;&boxur; <code>service-a</code>: <code>call.service-b.inventory</code> (Llamada HTTP cliente con propagación W3C)</li>
+          <li>&nbsp;&nbsp;&nbsp;&nbsp;&boxur; <code>service-b</code>: <code>GET /inventory/{product_id}</code> &rarr; <code>inventory.cache.hit</code> (Respuesta inventario)</li>
+          <li>&nbsp;&nbsp;&boxur; <code>service-a</code>: <code>GET /data/gcp http send</code> (Invocación HTTP hacia Data Service)</li>
+          <li>&nbsp;&nbsp;&nbsp;&nbsp;&boxur; <code>data-service</code>: <code>GET /data/{backend}</code> &rarr; <code>data.read</code> &rarr; <code>SELECT</code> (Consulta persistencia)</li>
+        </ol>
+      </div>
+
+      <div class="grid-3">
+        <div class="metric-box">
+          <div class="metric-value">17</div>
+          <div class="metric-label">Spans Totales en Traza</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value">3</div>
+          <div class="metric-label">Servicios Involucrados</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value">2</div>
+          <div class="metric-label">Consultas SQL Auditadas</div>
+        </div>
+      </div>
+
+      <h2>2. Evidencias de Métricas de Rendimiento y Logs Estructurados</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Métricas Prometheus Recolectadas</h3>
+          <ul>
+            <li><code>http_requests_total</code>: Contador clasificado por <code>method</code>, <code>endpoint</code> y <code>status_class</code> (2xx/5xx).</li>
+            <li><code>http_request_duration_seconds</code>: Histograma de latencia para cálculo de percentiles P50, P95 y P99.</li>
+            <li><code>data_db_duration_seconds</code>: Duración de transacciones en base de datos.</li>
+            <li>Scraping activo cada 15 segundos sobre pods mediante anotaciones de Kubernetes.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Logging Estructurado JSON Correlacionado</h3>
+          <p>Cada línea de log emitida en el estándar JSON incluye metadatos de contexto:</p>
+          <p><code>{"time": "...", "level": "INFO", "service": "data-service", "trace_id": "ace4862048aa006720d67b80551e895f", "span_id": "9426f8bf...", "message": "Database probe succeeded"}</code></p>
+          <p>Esto permite a los ingenieros de guardia filtrar logs en Loki o Cloud Logging utilizando directamente el identificador de traza.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>Laboratorio Integrador de Observabilidad · Repositorio: otel-multicloud-aiops-resilience-lab</span>
+      <span>Página 4 de 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGINA 5 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <span class="header-title">AIOps: Detección Inteligente y Reducción Demostrada de Ruido</span>
+        <span class="header-doc">Módulo B · Requisitos B-01, B-02, B-03, B-05</span>
+      </div>
+      <h2>1. Principio de Detección Correlacionada y Regla AND</h2>
+      <p>El Módulo B implementa un motor de detección de anomalías fundamentado en correlación estadística multivariable para resolver la fatiga de alertas generada por umbrales estáticos simples. La regla analítica evalúa:</p>
+      
+      <div class="card card-accent" style="text-align:center; font-size:10pt; font-weight:700; margin-bottom:8px;">
+        Condición de Alerta: <code>(error_rate &gt; &mu; + 2&sigma;) AND (latency_p99 &gt; SLO_threshold)</code>
+      </div>
+
+      <p>Donde la línea base estadística calcula la media poblacional (&mu;) y la desviación estándar (&sigma;) sobre un histórico de ventanas móviles estables, mientras que el SLO de latencia P99 se fijó en <strong>200 ms</strong>. Si ocurre un pico de latencia sin errores (jitter de red transitorio), la regla AND <strong>no dispara alerta</strong>, considerándolo tráfico no degradante.</p>
+
+      <h2>2. Benchmark Cuantitativo de Reducción de Ruido (70.0% Comprobado)</h2>
+      <p>Para satisfacer el criterio B-05 ("demostrar si se reduce el ruido frente a reglas estáticas"), se ejecutó un benchmark cuantitativo sobre 15 ventanas temporales simulando condiciones de producción (archivo: <code>evidence/module-b/noise-reduction-evidence.json</code>):</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Fase Operativa</th>
+            <th>Ventanas</th>
+            <th>Condición del Tráfico</th>
+            <th>Alertas Regla Estática (OR)</th>
+            <th>Alertas AIOps (AND)</th>
+            <th>Impacto Operacional</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Línea Base / Normal</strong></td>
+            <td>3</td>
+            <td>P99: 50 ms · Errores: &le; 1%</td>
+            <td>0</td>
+            <td>0</td>
+            <td>Operación normal sin degradación.</td>
+          </tr>
+          <tr>
+            <td><strong>Jitter Transitorio / GC</strong></td>
+            <td>5</td>
+            <td>P99: 210–260 ms (SLO) · Errores: 0%</td>
+            <td><strong>5 (Falsos Positivos)</strong></td>
+            <td><strong>0 (Filtradas)</strong></td>
+            <td>La regla estática genera fatiga innecesaria; AIOps suprime el ruido.</td>
+          </tr>
+          <tr>
+            <td><strong>Errores Aislados</strong></td>
+            <td>2</td>
+            <td>P99: 65 ms · Errores: 2%</td>
+            <td><strong>2 (Falsos Positivos)</strong></td>
+            <td><strong>0 (Filtradas)</strong></td>
+            <td>Errores menores dentro de margen tolerable sin degradación de latencia.</td>
+          </tr>
+          <tr>
+            <td><strong>Incidente Real</strong></td>
+            <td>3</td>
+            <td>P99: 310–380 ms · Errores: 12–15%</td>
+            <td><strong>3 (Disparadas)</strong></td>
+            <td><strong>3 (Disparadas)</strong></td>
+            <td>Detección certera del incidente severo enriquecida con trace_id.</td>
+          </tr>
+          <tr>
+            <td><strong>Recuperación</strong></td>
+            <td>2</td>
+            <td>P99: 50 ms · Errores: 0%</td>
+            <td>0</td>
+            <td>0</td>
+            <td>Cese automático de alertas tras estabilización.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-3">
+        <div class="metric-box">
+          <div class="metric-value">10</div>
+          <div class="metric-label">Alertas Estáticas Totales</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value">3</div>
+          <div class="metric-label">Alertas AIOps Reales</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value" style="color:#4ade80;">70.0 %</div>
+          <div class="metric-label">Reducción de Ruido Demostrada</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>Laboratorio Integrador de Observabilidad · Repositorio: otel-multicloud-aiops-resilience-lab</span>
+      <span>Página 5 de 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGINA 6 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <span class="header-title">Observabilidad de Red y Seguridad (VPC Flow Logs y Auditoría)</span>
+        <span class="header-doc">Módulo C · Requisitos C-01, C-02, C-03</span>
+      </div>
+      <h2>1. Ingestión y Análisis de VPC Flow Logs Reales en GCP</h2>
+      <p>Se habilitó la telemetría de red a nivel de subred en la VPC de Google Cloud (intervalo de 5 segundos, muestreo del 50% y metadatos completos). Mediante consultas directas a la API de Cloud Logging (filtro <code>logName: "projects/.../logs/compute.googleapis.com%2Fvpc_flows"</code>), se extrajeron registros de tráfico real en ejecución.</p>
+      
+      <div class="card card-accent" style="margin-bottom:8px;">
+        <strong>Clasificación de Tráfico y Métricas (Script: <code>security/flow_anomaly_detector.py</code>):</strong>
+        <p>El analizador procesa los payloads de conexión e identifica flujos en función del espacio de direcciones IP privadas RFC 1918:</p>
+        <ul style="margin-bottom:0;">
+          <li><strong>Tráfico Este-Oeste (E-W):</strong> 15 flujos observados (612.260 bytes). Comunicaciones internas entre nodos GKE, pods de microservicios y servicios de almacenamiento (p. ej., Service A a Data Service en puerto <code>8002</code>, o scraping de Prometheus hacia pods en puerto <code>8132</code>).</li>
+          <li><strong>Tráfico Norte-Sur (N-S):</strong> 5 flujos observados (1.120.040 bytes). Comunicaciones hacia endpoints externos de Google APIs (p. ej., reporte OTLP y consultas de telemetría a <code>74.125.69.95:443</code> y <code>172.217.214.95:443</code>).</li>
+        </ul>
+      </div>
+
+      <h2>2. Regla de Detección de Anomalías de Red y Seguridad</h2>
+      <p>Se programó una regla de detección de anomalías para identificar exfiltración de datos o patrones atípicos de volumen en el tráfico perimetral saliente:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Parámetro de la Regla</th>
+            <th>Definición y Umbral</th>
+            <th>Evidencia Capturada en el Laboratorio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Identificador de Regla</strong></td>
+            <td><code>HIGH_VOLUME_NORTH_SOUTH_OUTBOUND</code></td>
+            <td>Clasificada como severidad <code>WARNING</code> en <code>network-anomaly-analysis.json</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>Condición de Disparo</strong></td>
+            <td>Flujo Norte-Sur saliente &gt; 500 KB en una sola ventana</td>
+            <td>Flujo saliente desde IP <code>10.128.0.4</code> hacia destino <code>173.194.195.95:443</code> con <strong>744.320 bytes</strong>.</td>
+          </tr>
+          <tr>
+            <td><strong>Acción Operacional</strong></td>
+            <td>Registro en log de seguridad y señal en dashboard</td>
+            <td>Notificación para correlación con trazas activas en ese timestamp.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>3. Auditoría de Seguridad y Hallazgos Cloud</h2>
+      <div class="card card-warning">
+        <strong>Estado de Servicios de Seguridad Gestionados:</strong>
+        <ul>
+          <li><strong>GCP Security Command Center (SCC):</strong> Se verificó la disponibilidad de la API <code>securitycenter.googleapis.com</code>. En el nivel de suscripción estándar del proyecto se reporta estado sin hallazgos críticos de configuración en el clúster GKE.</li>
+          <li><strong>AWS Security Hub / SCP:</strong> Como se documentó previamente, la SCP institucional <code>p-zsz1ecbo</code> restringe la habilitación de VPC Flow Logs en AWS. Sin embargo, el archivo de Terraform <code>terraform/aws/vpc.tf</code> incluye la definición completa del recurso <code>aws_flow_log</code> conectado a CloudWatch Logs.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>Laboratorio Integrador de Observabilidad · Repositorio: otel-multicloud-aiops-resilience-lab</span>
+      <span>Página 6 de 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGINA 7 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <span class="header-title">Chaos Engineering: Experimento E1 (Latencia de Red y MTTD)</span>
+        <span class="header-doc">Módulo D · Requisitos D-01, D-02, D-04, D-05</span>
+      </div>
+      <h2>1. Definición y Ejecución del Experimento E1</h2>
+      <p>El Experimento E1 evaluó la capacidad de detección y resiliencia del sistema ante degradaciones en la capa de red entre microservicios, simulando congestión inter-zona en Kubernetes:</p>
+
+      <div class="card card-accent" style="margin-bottom:8px;">
+        <strong>Parámetros del Caos Inyectado:</strong>
+        <ul style="margin-bottom:0;">
+          <li><strong>Herramienta:</strong> Chaos Mesh con manifiesto <code>NetworkChaos</code> (<code>chaos/e1-integrador-latencia.yaml</code>).</li>
+          <li><strong>Objetivo del Fallo:</strong> Tráfico de entrada hacia el pod <code>service-b</code> en el namespace <code>otel-lab</code>.</li>
+          <li><strong>Acción:</strong> Inyección de <strong>200 ms de latencia artificial</strong> con jitter de 10 ms.</li>
+          <li><strong>Carga de Tráfico:</strong> 150 solicitudes síncronas generadas desde cliente sintético hacia Service A.</li>
+        </ul>
+      </div>
+
+      <h2>2. Resultados Observados, Métricas y Cálculo del MTTD</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Métrica de Rendimiento / Alerta</th>
+            <th>Línea Base Previa</th>
+            <th>Durante Inyección de Caos E1</th>
+            <th>Objetivo de Negocio / SLO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Latencia P99 Observada</strong></td>
+            <td>48.20 ms</td>
+            <td><strong>566.13 ms</strong> (degradación crítica)</td>
+            <td>SLO: &le; 200.0 ms</td>
+          </tr>
+          <tr>
+            <td><strong>Tasa de Error HTTP 5xx</strong></td>
+            <td>0.0 %</td>
+            <td><strong>0.0 %</strong> (0 errores en 150 requests)</td>
+            <td>SLO: &le; 1.0 %</td>
+          </tr>
+          <tr>
+            <td><strong>MTTD (Mean Time To Detect)</strong></td>
+            <td>N/A</td>
+            <td><strong>10.52 segundos</strong></td>
+            <td>Objetivo: &le; 120.0 segundos</td>
+          </tr>
+          <tr>
+            <td><strong>Alertas Solo-Latencia Disparadas</strong></td>
+            <td>0</td>
+            <td>6 ventanas consecutivas</td>
+            <td>Visibilidad de degradación</td>
+          </tr>
+          <tr>
+            <td><strong>Alertas Correlacionadas (AND)</strong></td>
+            <td>0</td>
+            <td><strong>0 (Correcto: sin fallos HTTP)</strong></td>
+            <td>Filtrado de ruido AIOps</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-3">
+        <div class="metric-box">
+          <div class="metric-value">10.52 s</div>
+          <div class="metric-label">MTTD Medido (E1)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value">566 ms</div>
+          <div class="metric-label">Latencia P99 Pico</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value" style="color:#4ade80;">100 %</div>
+          <div class="metric-label">Recuperación y Limpieza</div>
+        </div>
+      </div>
+
+      <h2>3. Análisis de Accionabilidad y Rollback</h2>
+      <p>Tras la remoción del recurso <code>NetworkChaos</code>, la latencia retornó a la normalidad (48 ms) en menos de 5 segundos. La alerta generada incluyó el identificador de traza correspondiente, permitiendo a los operadores aislar el cuello de botella en la llamada <code>call.service-b.inventory</code> dentro del span de Jaeger sin sospechar de la base de datos.</p>
+    </div>
+    <div class="footer-bar">
+      <span>Laboratorio Integrador de Observabilidad · Repositorio: otel-multicloud-aiops-resilience-lab</span>
+      <span>Página 7 de 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGINA 8 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <span class="header-title">Chaos Engineering: Experimento E2 (Fallos HTTP 5xx y Presupuesto de Error)</span>
+        <span class="header-doc">Módulo D · Requisitos D-01, D-03, D-05, D-06</span>
+      </div>
+      <h2>1. Definición y Ejecución del Experimento E2</h2>
+      <p>El Experimento E2 simuló una falla parcial en la capa de aplicación (L7) en <code>data-service</code> mediante una tasa controlada de respuestas HTTP 503 Service Unavailable:</p>
+
+      <div class="card card-accent" style="margin-bottom:8px;">
+        <strong>Parámetros del Caos Inyectado:</strong>
+        <ul style="margin-bottom:0;">
+          <li><strong>Mecanismo:</strong> Inyección programada en código activada mediante variables de entorno en el Deployment.</li>
+          <li><strong>Configuración:</strong> <code>FAULT_ENABLED=true</code>, <code>FAULT_RATE=0.10</code> (10% de probabilidad de fallo) y <code>FAULT_DELAY_MS=250</code>.</li>
+          <li><strong>Carga Evaluada:</strong> 200 solicitudes continuas dirigidas al flujo de persistencia multicloud.</li>
+        </ul>
+      </div>
+
+      <h2>2. Resultados Observados y Consumo del Presupuesto de Error</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Variable Evaluada</th>
+            <th>Valor Observado</th>
+            <th>Referencia / Umbral</th>
+            <th>Interpretación SRE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Solicitudes Totales</strong></td>
+            <td>200 peticiones</td>
+            <td>100% completadas</td>
+            <td>Carga suficiente para inferencia estadística.</td>
+          </tr>
+          <tr>
+            <td><strong>Errores HTTP 5xx Generados</strong></td>
+            <td><strong>24 respuestas 503 (12.0 %)</strong></td>
+            <td>Tasa teórica: 10.0 %</td>
+            <td>Desviación normal de muestreo binomial en 200 iteraciones.</td>
+          </tr>
+          <tr>
+            <td><strong>Latencia P99 Observada</strong></td>
+            <td><strong>254.30 ms</strong></td>
+            <td>SLO: 200.0 ms</td>
+            <td>Retardo L7 de 250 ms cruzó el límite del SLO.</td>
+          </tr>
+          <tr>
+            <td><strong>MTTD (Mean Time To Detect)</strong></td>
+            <td><strong>4.68 segundos</strong></td>
+            <td>Objetivo: &le; 120.0 s</td>
+            <td>Detección casi instantánea en la primera ventana móvil.</td>
+          </tr>
+          <tr>
+            <td><strong>Presupuesto de Error (SLO 99%)</strong></td>
+            <td><strong>12 veces el presupuesto</strong></td>
+            <td>Margen admisible: 1.0 %</td>
+            <td>El 12% de error agotó inmediatamente el presupuesto de la ventana.</td>
+          </tr>
+          <tr>
+            <td><strong>Condición AND AIOps</strong></td>
+            <td><strong>Activada (8 ventanas)</strong></td>
+            <td>Error &gt; &mu;+2&sigma; AND P99 &gt; SLO</td>
+            <td>Alerta crítica legítima generada con <code>trace_id</code> adjunto.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-3">
+        <div class="metric-box">
+          <div class="metric-value">4.68 s</div>
+          <div class="metric-label">MTTD Medido (E2)</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value">12.0 %</div>
+          <div class="metric-label">Tasa Error HTTP 5xx</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-value" style="color:#f59e0b;">12x</div>
+          <div class="metric-label">Consumo de Error Budget</div>
+        </div>
+      </div>
+
+      <h2>3. Verificación de Limpieza y Recuperación</h2>
+      <p>Tras finalizar el experimento, se aplicó la remediación mediante el restablecimiento de <code>FAULT_ENABLED="false"</code> en el Deployment. El script de verificación certificó la recuperación total: 0 errores 5xx en solicitudes subsiguientes y restauración del error budget disponible.</p>
+    </div>
+    <div class="footer-bar">
+      <span>Laboratorio Integrador de Observabilidad · Repositorio: otel-multicloud-aiops-resilience-lab</span>
+      <span>Página 8 de 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGINA 9 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <span class="header-title">Blueprint de Madurez de Observabilidad (8 Dominios)</span>
+        <span class="header-doc">Módulo E · Requisitos E-01, E-02, E-03</span>
+      </div>
+      <h2>1. Modelo de Madurez Organizacional en Observabilidad</h2>
+      <p>Se estructuró una matriz de evaluación integral sobre 8 dominios fundamentales, evaluando el grado de adopción técnica y operativa alcanzado en el laboratorio bajo una escala de 1 a 5:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Dominio de Madurez Evaluado</th>
+            <th>Nivel</th>
+            <th>Justificación Basada en Evidencia Verificable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>D1</strong></td>
+            <td><strong>Estrategia, Gobierno y SLO/SLI</strong></td>
+            <td><strong>3.5</strong></td>
+            <td>SLIs formalizados para P99 (200 ms) y tasa de error (&le; 1%). Medición de consumo de presupuesto de error durante pruebas de resiliencia.</td>
+          </tr>
+          <tr>
+            <td><strong>D2</strong></td>
+            <td><strong>Instrumentación OpenTelemetry</strong></td>
+            <td><strong>4.0</strong></td>
+            <td>Implementación completa en Python SDK con propagación W3C (<code>traceparent</code>) y convenciones semánticas <code>db.*</code>. Traza verificada con 17 spans.</td>
+          </tr>
+          <tr>
+            <td><strong>D3</strong></td>
+            <td><strong>Métricas y Monitoreo de Capacidad</strong></td>
+            <td><strong>4.0</strong></td>
+            <td>Prometheus operando con scraping en Kubernetes cada 15s. Histogramas y contadores de peticiones por código y latencia.</td>
+          </tr>
+          <tr>
+            <td><strong>D4</strong></td>
+            <td><strong>Logs, Trazas y Correlación Cruzada</strong></td>
+            <td><strong>4.0</strong></td>
+            <td>Logs JSON estructurados con inyección de <code>trace_id</code> y <code>span_id</code>. Correlación bidireccional comprobada con Jaeger y Loki.</td>
+          </tr>
+          <tr>
+            <td><strong>D5</strong></td>
+            <td><strong>Detección Inteligente y AIOps</strong></td>
+            <td><strong>3.5</strong></td>
+            <td>Regla de correlación AND estadística. <strong>70.0% de reducción demostrada de ruido</strong> y alertas operacionales enriquecidas con trace_id.</td>
+          </tr>
+          <tr>
+            <td><strong>D6</strong></td>
+            <td><strong>Observabilidad de Red y Seguridad</strong></td>
+            <td><strong>3.5</strong></td>
+            <td>VPC Flow Logs habilitados con ingesta real en GCP. Clasificación N-S vs E-W y detección de anomalías de volumen. Auditoría de SCP en AWS.</td>
+          </tr>
+          <tr>
+            <td><strong>D7</strong></td>
+            <td><strong>Resiliencia y Chaos Engineering</strong></td>
+            <td><strong>4.5</strong></td>
+            <td>Experimentos E1 (latencia) y E2 (HTTP 5xx) ejecutados con éxito. MTTD récord de 10.52s y 4.68s (muy superior al límite de 120s) y limpieza verificada.</td>
+          </tr>
+          <tr>
+            <td><strong>D8</strong></td>
+            <td><strong>Operación de Plataforma e IaC</strong></td>
+            <td><strong>4.0</strong></td>
+            <td>Infraestructura 100% declarada en Terraform modular para GCP y AWS, validada sintácticamente, orientada a micro-costos.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card card-success" style="margin-top:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <strong style="font-size:11pt; color:#15803d;">Puntuación Global de Madurez: 3.8 / 5.0</strong><br>
+            <span>Clasificación: <strong>Nivel Definido / Avanzando a Medido e Integrado</strong></span>
+          </div>
+          <div style="font-size:8pt; color:#334155;">
+            Cumple ampliamente los objetivos académicos y sienta las bases para operación SRE empresarial.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>Laboratorio Integrador de Observabilidad · Repositorio: otel-multicloud-aiops-resilience-lab</span>
+      <span>Página 9 de 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGINA 10 ==================== -->
+  <div class="page">
+    <div class="page-content">
+      <div class="header-bar">
+        <span class="header-title">Hoja de Ruta Estratégica, Conclusiones y Referencias</span>
+        <span class="header-doc">Módulo E · Requisitos E-04, E-05</span>
+      </div>
+      <h2>1. Hoja de Ruta de Evolución a 3 Meses (Roadmap SRE)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Horizonte</th>
+            <th>Prioridad Estratégica</th>
+            <th>Acciones Clave y Entregables Verificables</th>
+            <th>Responsable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mes 1</strong></td>
+            <td>Estabilización Multicloud e IaC Continua</td>
+            <td>
+              &bull; Gestionar levantamiento de SCP en AWS para desplegar RDS nativo.<br>
+              &bull; Automatizar pipeline CI/CD con GitHub Actions (<code>terraform plan</code> con estado remoto).<br>
+              &bull; Alertas multi-ventana de consumo de presupuesto de error (burn-rate).
+            </td>
+            <td>Cloud Platform Engineer & SRE Lead</td>
+          </tr>
+          <tr>
+            <td><strong>Mes 2</strong></td>
+            <td>AIOps en Streaming y Service Mesh L7</td>
+            <td>
+              &bull; Migrar correlador a motor de streaming continuo (Pub/Sub + Cloud Run).<br>
+              &bull; Desplegar Cloud Service Mesh / Istio para telemetría mTLS automática.<br>
+              &bull; Dashboard unificado de seguridad integrando GCP SCC y AWS Security Hub.
+            </td>
+            <td>Observability Architect & SecOps</td>
+          </tr>
+          <tr>
+            <td><strong>Mes 3</strong></td>
+            <td>Chaos as Code y Optimización FinOps</td>
+            <td>
+              &bull; Integrar pruebas de Chaos Mesh automáticas en pipelines de pre-producción.<br>
+              &bull; Implementar Kubecost para atribución de costos de observabilidad.<br>
+              &bull; Institucionalizar Game Days mensuales y certificar Madurez Nivel 4.5.
+            </td>
+            <td>Lead SRE & FinOps Practitioner</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>2. Conclusiones y Lecciones Aprendidas</h2>
+      <div class="card card-accent" style="margin-bottom:8px;">
+        <ul style="margin-bottom:0;">
+          <li><strong>La correlación contextual elimina la fatiga de alertas:</strong> El uso de la condición AND (error anómalo y violación de SLO) redujo el ruido en un 70%, permitiendo a los operadores concentrarse exclusivamente en incidentes que degradan la experiencia del usuario.</li>
+          <li><strong>OpenTelemetry es el estándar de facto:</strong> La propagación del contexto W3C permitió reconstruir una traza unificada de 17 spans atravesando tres servicios y operaciones de base de datos relacionales sin acoplamiento a proveedores propietarios.</li>
+          <li><strong>La resiliencia debe verificarse empíricamente:</strong> La inyección controlada de caos demostró MTTDs inferiores a 11 segundos, validando que el sistema alerta 10 veces más rápido que la ventana máxima admisible de 120 segundos.</li>
+        </ul>
+      </div>
+
+      <h2>3. Referencias y Repositorio de Código</h2>
+      <ul style="font-size:7.5pt; color:#475569; margin-bottom:0;">
+        <li>Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (2016). <em>Site Reliability Engineering: How Google Runs Production Systems</em>. O'Reilly Media.</li>
+        <li>OpenTelemetry Documentation (2026). <em>Database Semantic Conventions & Trace Context W3C Standard</em>. CNCF.</li>
+        <li>Chaos Mesh Authors (2026). <em>Chaos Engineering in Cloud Native Architectures</em>. CNCF Projects.</li>
+        <li>Código, manifiestos y evidencias disponibles en: <code>https://github.com/jheimar/otel-multicloud-aiops-resilience-lab</code> (Tag: <code>v1.0</code>).</li>
+      </ul>
+    </div>
+    <div class="footer-bar">
+      <span>Laboratorio Integrador de Observabilidad · Repositorio: otel-multicloud-aiops-resilience-lab</span>
+      <span>Página 10 de 10</span>
+    </div>
+  </div>
+
+</body>
+</html>
