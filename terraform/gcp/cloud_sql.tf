@@ -18,8 +18,8 @@ resource "google_sql_database_instance" "postgres" {
     ip_configuration {
       ipv4_enabled = true
       authorized_networks {
-        name  = "all-authorized-lab"
-        value = "0.0.0.0/0" # Acceso temporal con password fuerte para el laboratorio
+        name  = "gke-subnet-authorized"
+        value = var.allowed_authorized_network
       }
     }
 

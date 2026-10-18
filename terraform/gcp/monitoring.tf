@@ -4,15 +4,16 @@ resource "google_monitoring_alert_policy" "high_latency" {
   combiner     = "OR"
 
   conditions {
-    display_name = "Cloud Run / GKE Request Latency P99"
+    display_name = "GKE Microservices Request Latency P99 (> 200ms SLO)"
     condition_threshold {
-      filter          = "metric.type=\"kubernetes.io/container/cpu/core_usage_time\" AND resource.type=\"k8s_container\""
+      filter          = "metric.type=\"prometheus.googleapis.com/http_request_duration_seconds/histogram\" AND resource.type=\"k8s_container\""
       duration        = "60s"
       comparison      = "COMPARISON_GT"
-      threshold_value = 0.8
+      threshold_value = 0.200 # 200 ms en segundos
       aggregations {
-        alignment_period   = "60s"
-        per_series_aligner = "ALIGN_RATE"
+        alignment_period     = "60s"
+        per_series_aligner   = "ALIGN_PERCENTILE_99"
+        cross_series_reducer = "REDUCE_PERCENTILE_99"
       }
     }
   }

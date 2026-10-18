@@ -52,9 +52,14 @@ variable "db_username" {
   default     = "oteladmin"
 }
 
+variable "allowed_ingress_cidrs" {
+  description = "Allowed CIDR blocks for RDS PostgreSQL ingress (restricts public access)"
+  type        = list(string)
+  default     = ["10.0.0.0/16", "10.128.0.0/20"]
+}
+
 variable "db_password" {
-  description = "Master password for RDS"
+  description = "Master password for RDS (Must be passed via TF_VAR_db_password or secure secret manager)"
   type        = string
   sensitive   = true
-  default     = "OtelLabAwsSecure2026!"
 }

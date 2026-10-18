@@ -7,4 +7,5 @@ private_subnet_cidrs   = ["10.0.10.0/24", "10.0.20.0/24"]
 db_instance_identifier = "otel-rds-postgres"
 db_name                = "appdb"
 db_username            = "oteladmin"
-db_password            = "OtelLabAwsSecure2026!"
+db_password            = "REPLACE_WITH_STRONG_SECRET_PASSWORD"
+allowed_ingress_cidrs  = ["10.0.0.0/16", "10.128.0.0/20"]

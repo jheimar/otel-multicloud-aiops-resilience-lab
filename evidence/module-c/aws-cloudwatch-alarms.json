@@ -1,0 +1,61 @@
+{
+    "MetricAlarms": [
+        {
+            "AlarmName": "AIOps-Lab-AWS: Low Freeable Memory (< 100MB)",
+            "AlarmArn": "arn:aws:cloudwatch:us-east-2:006209503071:alarm:AIOps-Lab-AWS: Low Freeable Memory (< 100MB)",
+            "AlarmDescription": "Alerta de memoria libre baja en la instancia RDS PostgreSQL",
+            "AlarmConfigurationUpdatedTimestamp": 1792342081.261,
+            "ActionsEnabled": true,
+            "OKActions": [],
+            "AlarmActions": [],
+            "InsufficientDataActions": [],
+            "StateValue": "INSUFFICIENT_DATA",
+            "StateReason": "Unchecked: Initial alarm creation",
+            "StateUpdatedTimestamp": 1792342081.261,
+            "MetricName": "FreeableMemory",
+            "Namespace": "AWS/RDS",
+            "Statistic": "Average",
+            "Dimensions": [
+                {
+                    "Name": "DBInstanceIdentifier",
+                    "Value": "db-KET37XXM43L5IZSTPLJYCACPCI"
+                }
+            ],
+            "Period": 60,
+            "EvaluationPeriods": 1,
+            "Threshold": 104857600.0,
+            "ComparisonOperator": "LessThanThreshold",
+            "TreatMissingData": "missing",
+            "StateTransitionedTimestamp": 1792342081.261
+        },
+        {
+            "AlarmName": "AIOps-Lab-AWS: RDS High CPU (> 80%)",
+            "AlarmArn": "arn:aws:cloudwatch:us-east-2:006209503071:alarm:AIOps-Lab-AWS: RDS High CPU (> 80%)",
+            "AlarmDescription": "Alerta operacional de degradacion en la base de datos AWS RDS PostgreSQL",
+            "AlarmConfigurationUpdatedTimestamp": 1792342081.235,
+            "ActionsEnabled": true,
+            "OKActions": [],
+            "AlarmActions": [],
+            "InsufficientDataActions": [],
+            "StateValue": "INSUFFICIENT_DATA",
+            "StateReason": "Unchecked: Initial alarm creation",
+            "StateUpdatedTimestamp": 1792342081.235,
+            "MetricName": "CPUUtilization",
+            "Namespace": "AWS/RDS",
+            "Statistic": "Average",
+            "Dimensions": [
+                {
+                    "Name": "DBInstanceIdentifier",
+                    "Value": "db-KET37XXM43L5IZSTPLJYCACPCI"
+                }
+            ],
+            "Period": 60,
+            "EvaluationPeriods": 2,
+            "Threshold": 80.0,
+            "ComparisonOperator": "GreaterThanThreshold",
+            "TreatMissingData": "missing",
+            "StateTransitionedTimestamp": 1792342081.235
+        }
+    ],
+    "CompositeAlarms": []
+}

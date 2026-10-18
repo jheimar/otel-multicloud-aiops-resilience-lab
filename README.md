@@ -53,18 +53,18 @@ flowchart TD
   * **Reducción de ruido demostrada:** **70.0 %** ([`evidence/module-b/noise-reduction-evidence.json`](evidence/module-b/noise-reduction-evidence.json)).
 
 ### **Módulo C: Observabilidad de Red y Seguridad**
-* **VPC Flow Logs Reales en GCP:** Captura verificada de 20 eventos reales de red en Cloud Logging con IPs, puertos y volumen ([`evidence/module-c/20261018T050010Z/vpc-flow-evidence-real.json`](evidence/module-c/20261018T050010Z/vpc-flow-evidence-real.json)).
+* **VPC Flow Logs Multicloud y Seguridad:** Captura verificada de 20 eventos reales de red en Cloud Logging GCP ([`evidence/module-c/20261018T050010Z/vpc-flow-evidence-real.json`](evidence/module-c/20261018T050010Z/vpc-flow-evidence-real.json)) y eventos reales de rechazo (REJECT) por Security Group en AWS CloudWatch Logs ([`evidence/module-c/aws-flow-logs-events.json`](evidence/module-c/aws-flow-logs-events.json)).
 * **Clasificación y Detección de Anomalías:** Script [`security/flow_anomaly_detector.py`](security/flow_anomaly_detector.py) clasifica flujos en Norte-Sur (5 flujos, 1.12 MB) y Este-Oeste (15 flujos, 612 KB), detectando anomalías por flujos salientes de alto volumen ([`evidence/module-c/20261018T050010Z/network-anomaly-analysis.json`](evidence/module-c/20261018T050010Z/network-anomaly-analysis.json)).
-* **Auditoría de Gobernanza AWS:** Documentación de la SCP organizacional `p-zsz1ecbo` en la cuenta `006209503071` con evidencia técnica del bloqueo en `ec2:*` y `rds:*`.
+* **Despliegue y Gobernanza AWS:** Identificación de la delimitación regional de la SCP `p-zsz1ecbo` (bloqueo sobre `us-east-1`), permitiendo el despliegue exitoso de 19 recursos en `us-east-2` (Ohio), incluyendo VPC, subnets, RDS PostgreSQL y CloudWatch.
 
 ### **Módulo D: Resiliencia y Chaos Engineering**
 * **Experimento E1 (Latencia de Red):** 200 ms inyectados con Chaos Mesh en Service B. Latencia P99 pico: 566.13 ms; 0 errores HTTP; **MTTD = 10.52 segundos** (objetivo &le; 120 s).
 * **Experimento E2 (Fallos HTTP 5xx L7):** 10% fallos en Data Service (12.0% observado en 200 requests). Latencia P99: 254.30 ms; **MTTD = 4.68 segundos**; activación de regla AND correlacionada y recuperación verificada tras rollback.
 
 ### **Módulo E: Blueprint de Madurez y Roadmap Estratégico**
-* **Blueprint de 8 Dominios:** Calificación de 1 a 5 con justificación técnica por dominio ([`docs/BLUEPRINT-MADUREZ.md`](docs/BLUEPRINT-MADUREZ.md)). Puntuación global: **3.8 / 5.0 (Nivel Definido / En transición a Medido e Integrado)**.
+* **Blueprint de 8 Dominios:** Calificación de 1 a 5 con justificación técnica por dominio ([`docs/BLUEPRINT-MADUREZ.md`](docs/BLUEPRINT-MADUREZ.md)). Puntuación global: **3.9 / 5.0 (Nivel Definido / En transición a Medido e Integrado)** (Suma exacta: 31 / 8 = 3.875).
 * **Hoja de Ruta a 3 Meses:**
-  * *Mes 1:* Estabilización multicloud, levantamiento de SCP en AWS, pipeline CI/CD con Terraform y alertas multi-ventana burn-rate.
+  * *Mes 1:* Consolidación multicloud, pipeline CI/CD con Terraform Cloud / GitHub Actions y alertas multi-ventana burn-rate.
   * *Mes 2:* Motor AIOps en streaming (Pub/Sub) y Service Mesh L7 (mTLS / Cloud Mesh).
   * *Mes 3:* Chaos as Code en preproducción, atribución de costos con Kubecost y Game Days periódicos.
 

@@ -29,22 +29,22 @@ El presente modelo evalúa la madurez técnica y operativa del sistema de observ
 | **D7** | **Resiliencia, Chaos Engineering y Respuesta a Incidentes** | **4.5** | Experimentos E1 (Chaos Mesh NetworkChaos: 200 ms latencia, MTTD = 10.52 s) y E2 (Fallo L7 HTTP 5xx: 12 % observado, MTTD = 4.68 s) ejecutados, medidos y limpiados exitosamente. Objetivo MTTD ≤ 120s superado con creces. | Automatizar la ejecución de Chaos Experiments continuos dentro del pipeline CI/CD (*Continuous Verification*). |
 | **D8** | **Operación de Plataforma, IaC y Eficiencia de Costos** | **4.0** | Toda la infraestructura codificada en Terraform modular para GCP y AWS (`terraform/gcp`, `terraform/aws`), validada sintácticamente (`terraform validate`). Cluster GKE con pods de bajo consumo y parametrización de costos en micro-tiers. | Implementar OpenCost o Kubecost para atribución granular de costos por servicio e imputación de observabilidad. |
 
-**Nivel de Madurez Promedio Global:** **3.8 / 5.0 (Definido / En transición a Medido e Integrado)**.
+**Nivel de Madurez Promedio Global:** **3.9 / 5.0 (Definido / En transición a Medido e Integrado)** (Suma exacta de dominios: 31 / 8 = 3.875).
 
 ---
 
 ## 2. Hoja de Ruta Estratégica a 3 Meses (Roadmap de Evolución)
 
-La hoja de ruta define las acciones priorizadas para cerrar las brechas observadas, escalar las capacidades multicloud y avanzar del Nivel 3.8 al Nivel 4.5 en el modelo de madurez.
+La hoja de ruta define las acciones priorizadas para consolidar las capacidades multicloud, cerrar las brechas observadas y avanzar del Nivel 3.9 al Nivel 4.5 en el modelo de madurez.
 
 ```mermaid
 gantt
     title Hoja de Ruta de Evolución de Observabilidad (3 Meses)
     dateFormat  YYYY-MM-DD
     section Mes 1: Estabilización
-    Desbloqueo SCP AWS y RDS Nativo       :m1_1, 2026-11-01, 15d
-    IaC CI/CD con Terraform Cloud         :m1_2, 2026-11-10, 15d
-    Alertas Burn-Rate Multi-Ventana       :m1_3, 2026-11-15, 15d
+    Automatización CI/CD con Terraform Cloud :m1_1, 2026-11-01, 15d
+    Alertas Burn-Rate Multi-Ventana       :m1_2, 2026-11-10, 15d
+    Consolidación de Métricas Multicloud  :m1_3, 2026-11-15, 15d
     section Mes 2: AIOps y Seguridad
     Motor AIOps en Streaming              :m2_1, 2026-12-01, 20d
     SCC & Security Hub Unificado          :m2_2, 2026-12-10, 20d
@@ -58,11 +58,11 @@ gantt
 ### 2.1 Desglose Mensual de Actividades y Entregables
 
 #### **Mes 1: Estabilización Multicloud, Gobernanza e IaC Continua**
-* **Objetivo:** Resolver restricciones de gobierno en AWS, automatizar el pipeline de infraestructura y formalizar SLOs con alertas multi-ventana.
+* **Objetivo:** Consolidar el pipeline de infraestructura continua para los recursos activos en GCP y AWS us-east-2, y formalizar SLOs con alertas multi-ventana.
 * **Actividades Clave:**
-  1. Tramitar con la administración de AWS Organization la flexibilización o excepción de la SCP `p-zsz1ecbo` para habilitar el despliegue del módulo RDS y VPC Flow Logs en AWS.
-  2. Implementar pipeline de CI/CD en GitHub Actions con `terraform fmt`, `tflint`, `tfsec` y `terraform plan` automatizado con estado remoto en Cloud Storage / S3.
-  3. Formalizar acuerdos de nivel de servicio (SLA/SLO/SLI) con alertas multi-ventana de consumo de presupuesto (2% en 1 hora, 5% en 6 horas).
+  1. Implementar pipeline de CI/CD en GitHub Actions con `terraform fmt`, `tflint`, `tfsec` y `terraform plan` automatizado con estado remoto seguro en Cloud Storage / S3.
+  2. Formalizar acuerdos de nivel de servicio (SLA/SLO/SLI) con alertas multi-ventana de quema de presupuesto (*burn-rate alerts*: 2% en 1 hora, 5% en 6 horas).
+  3. Consolidar el panel unificado de Grafana integrando métricas de bases de datos GCP Cloud SQL y AWS RDS PostgreSQL.
 * **Responsable / Rol:** Cloud Platform Engineer & SRE Lead.
 * **Métrica de Éxito:** Despliegue 100% automatizado sin intervención manual; 0 alertas huérfanas sin SLO asociado.
 

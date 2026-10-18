@@ -16,3 +16,16 @@ terraform fmt -check
 terraform validate
 terraform plan -out=tfplan
 ```
+
+## Gestión de Recursos Existentes e Importación Segura
+
+Para evitar conflictos de nombres al aplicar Terraform sobre el clúster GKE o la instancia de Cloud SQL ya operativos en el proyecto, utilice `terraform import`:
+
+```bash
+# Importar clúster GKE existente:
+terraform import google_container_cluster.primary projects/project-138a5e79-5342-4c60-94f/locations/us-central1-b/clusters/otel-chaos-gameday
+
+# Importar instancia Cloud SQL existente:
+terraform import google_sql_database_instance.postgres projects/project-138a5e79-5342-4c60-94f/instances/otel-cloudsql-postgres
+```
+

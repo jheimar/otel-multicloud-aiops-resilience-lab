@@ -4,11 +4,11 @@ resource "aws_security_group" "rds_sg" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "PostgreSQL port from anywhere (lab sandbox)"
+    description = "PostgreSQL port from authorized GKE subnet and VPC"
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.allowed_ingress_cidrs
   }
 
   egress {

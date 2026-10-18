@@ -52,9 +52,14 @@ variable "db_user" {
   default     = "oteluser"
 }
 
+variable "allowed_authorized_network" {
+  description = "Authorized CIDR network for Cloud SQL access (restricting public access)"
+  type        = string
+  default     = "10.128.0.0/20"
+}
+
 variable "db_password" {
-  description = "Password for the database user"
+  description = "Password for the database user (Must be passed securely without committing to git)"
   type        = string
   sensitive   = true
-  default     = "OtelLabSecure2026!"
 }

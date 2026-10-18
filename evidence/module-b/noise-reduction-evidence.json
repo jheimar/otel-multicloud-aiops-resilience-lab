@@ -5,6 +5,178 @@
   "aiops_correlated_alerts": 3,
   "false_positives_filtered": 7,
   "noise_reduction_percentage": 70.0,
+  "synthetic_canonical_benchmark": {
+    "dataset_type": "SYNTHETIC_CANONICAL_SIMULATION",
+    "description": "Simulaci\u00f3n controlada de 15 ventanas temporales que replican 5 fases operacionales: tr\u00e1fico normal, jitter transitorio de red/GC, errores aislados, incidentes reales combinados y recuperaci\u00f3n.",
+    "evaluation_period": "2026-10-18T10:10:00Z - 2026-10-18T10:24:00Z",
+    "total_windows_evaluated": 15,
+    "static_threshold_alerts": 10,
+    "aiops_correlated_alerts": 3,
+    "false_positives_filtered": 7,
+    "noise_reduction_percentage": 70.0,
+    "windows_detail": [
+      {
+        "timestamp": "2026-10-18T10:10:00Z",
+        "trace_id": "trace-norm-01",
+        "error_rate": 0.01,
+        "p99_ms": 48.0,
+        "static_alert": false,
+        "aiops_correlated_alert": false,
+        "classification": "NORMAL"
+      },
+      {
+        "timestamp": "2026-10-18T10:11:00Z",
+        "trace_id": "trace-norm-02",
+        "error_rate": 0.0,
+        "p99_ms": 52.0,
+        "static_alert": false,
+        "aiops_correlated_alert": false,
+        "classification": "NORMAL"
+      },
+      {
+        "timestamp": "2026-10-18T10:12:00Z",
+        "trace_id": "trace-norm-03",
+        "error_rate": 0.01,
+        "p99_ms": 50.0,
+        "static_alert": false,
+        "aiops_correlated_alert": false,
+        "classification": "NORMAL"
+      },
+      {
+        "timestamp": "2026-10-18T10:13:00Z",
+        "trace_id": "trace-jitter-01",
+        "error_rate": 0.0,
+        "p99_ms": 230.0,
+        "static_alert": true,
+        "aiops_correlated_alert": false,
+        "classification": "NOISE"
+      },
+      {
+        "timestamp": "2026-10-18T10:14:00Z",
+        "trace_id": "trace-jitter-02",
+        "error_rate": 0.01,
+        "p99_ms": 245.0,
+        "static_alert": true,
+        "aiops_correlated_alert": false,
+        "classification": "NOISE"
+      },
+      {
+        "timestamp": "2026-10-18T10:15:00Z",
+        "trace_id": "trace-jitter-03",
+        "error_rate": 0.0,
+        "p99_ms": 260.0,
+        "static_alert": true,
+        "aiops_correlated_alert": false,
+        "classification": "NOISE"
+      },
+      {
+        "timestamp": "2026-10-18T10:16:00Z",
+        "trace_id": "trace-jitter-04",
+        "error_rate": 0.01,
+        "p99_ms": 225.0,
+        "static_alert": true,
+        "aiops_correlated_alert": false,
+        "classification": "NOISE"
+      },
+      {
+        "timestamp": "2026-10-18T10:17:00Z",
+        "trace_id": "trace-jitter-05",
+        "error_rate": 0.0,
+        "p99_ms": 210.0,
+        "static_alert": true,
+        "aiops_correlated_alert": false,
+        "classification": "NOISE"
+      },
+      {
+        "timestamp": "2026-10-18T10:18:00Z",
+        "trace_id": "trace-err-01",
+        "error_rate": 0.02,
+        "p99_ms": 65.0,
+        "static_alert": true,
+        "aiops_correlated_alert": false,
+        "classification": "NOISE"
+      },
+      {
+        "timestamp": "2026-10-18T10:19:00Z",
+        "trace_id": "trace-err-02",
+        "error_rate": 0.02,
+        "p99_ms": 70.0,
+        "static_alert": true,
+        "aiops_correlated_alert": false,
+        "classification": "NOISE"
+      },
+      {
+        "timestamp": "2026-10-18T10:20:00Z",
+        "trace_id": "trace-incident-01",
+        "error_rate": 0.14,
+        "p99_ms": 340.0,
+        "static_alert": true,
+        "aiops_correlated_alert": true,
+        "classification": "TRUE_INCIDENT"
+      },
+      {
+        "timestamp": "2026-10-18T10:21:00Z",
+        "trace_id": "trace-incident-02",
+        "error_rate": 0.15,
+        "p99_ms": 380.0,
+        "static_alert": true,
+        "aiops_correlated_alert": true,
+        "classification": "TRUE_INCIDENT"
+      },
+      {
+        "timestamp": "2026-10-18T10:22:00Z",
+        "trace_id": "trace-incident-03",
+        "error_rate": 0.12,
+        "p99_ms": 310.0,
+        "static_alert": true,
+        "aiops_correlated_alert": true,
+        "classification": "TRUE_INCIDENT"
+      },
+      {
+        "timestamp": "2026-10-18T10:23:00Z",
+        "trace_id": "trace-rec-01",
+        "error_rate": 0.01,
+        "p99_ms": 55.0,
+        "static_alert": false,
+        "aiops_correlated_alert": false,
+        "classification": "NORMAL"
+      },
+      {
+        "timestamp": "2026-10-18T10:24:00Z",
+        "trace_id": "trace-rec-02",
+        "error_rate": 0.0,
+        "p99_ms": 48.0,
+        "static_alert": false,
+        "aiops_correlated_alert": false,
+        "classification": "NORMAL"
+      }
+    ]
+  },
+  "observed_chaos_experiments_benchmark": {
+    "dataset_type": "LIVE_OBSERVED_CHAOS_TELEMETRY",
+    "description": "Telemetr\u00eda observada en vivo durante los experimentos de Chaos Engineering E1 (latencia) y E2 (HTTP 503) ejecutados en el cluster GKE.",
+    "e1_latency_experiment": {
+      "windows": 6,
+      "static_alerts": 6,
+      "aiops_alerts": 0,
+      "false_positives_filtered": 6,
+      "noise_reduction_percentage": 100.0,
+      "behavior_observed": "Jitter transitorio severo (P99 pico 566ms, 0% errores). El correlador filtr\u00f3 el 100% de las falsas alarmas que el umbral est\u00e1tico dispar\u00f3."
+    },
+    "e2_http503_experiment": {
+      "windows": 8,
+      "static_alerts": 8,
+      "aiops_alerts": 8,
+      "incident_detection_rate_percentage": 100.0,
+      "behavior_observed": "Incidente real L7 (12% errores, P99 254ms). El correlador detect\u00f3 el 100% de las ventanas degradadas con MTTD de 4.68s."
+    },
+    "total_windows_evaluated": 14,
+    "static_threshold_alerts": 14,
+    "aiops_correlated_alerts": 8,
+    "false_positives_filtered": 6,
+    "noise_reduction_percentage": 42.86
+  },
+  "comparison_and_conclusion": "El benchmark sint\u00e9tico can\u00f3nico demuestra el 70.0% de reducci\u00f3n de ruido bajo 5 fases operativas completas. Los datos observados en los experimentos reales de caos confirman en vivo que el correlador AIOps suprime el 100% del ruido de jitter de latencia (E1) mientras mantiene 100% de detecci\u00f3n ante incidentes reales (E2), logrando un 42.86% de reducci\u00f3n global en las 14 ventanas observadas en el laboratorio.",
   "windows_detail": [
     {
       "timestamp": "2026-10-18T10:10:00Z",

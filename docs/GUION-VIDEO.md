@@ -70,12 +70,12 @@ kubectl port-forward svc/service-a -n otel-lab 8000:8000 &
 
 ---
 
-### **Minuto 5:15 - 6:30 | VPC Flow Logs y Seguridad (Módulo C)**
-* **Qué mostrar en pantalla:** Consola de GCP Cloud Logging con el filtro de VPC Flow Logs (`compute.googleapis.com/vpc_flows`) y el archivo `evidence/module-c/20261018T050010Z/network-anomaly-analysis.json`.
+### **Minuto 5:15 - 6:30 | VPC Flow Logs y Seguridad Multicloud (Módulo C)**
+* **Qué mostrar en pantalla:** Consola de GCP Cloud Logging con el filtro de VPC Flow Logs (`compute.googleapis.com/vpc_flows`), consola de CloudWatch con los logs de flujo en AWS `/aws/vpc/otel-lab-flow-logs`, y el archivo `evidence/module-c/aws-flow-logs-events.json`.
 * **Qué decir:**
-  > "En el Módulo C, habilitamos VPC Flow Logs en la red de GCP, ingiriendo eventos reales de red con direcciones IP de origen, destino, puertos y volumen de bytes.
-  > Mediante nuestro analizador de tráfico clasificamos los flujos en Norte-Sur y Este-Oeste, y configuramos una regla de detección de anomalías para identificar flujos salientes de alto volumen (> 500 KB).
-  > Respecto a AWS, documentamos técnicamente la existencia de una Service Control Policy (SCP) institucional que bloqueó llamadas a EC2/RDS, manteniendo la IaC 100 % escrita y validada con Terraform."
+  > "En el Módulo C, habilitamos la observabilidad de red en ambas nubes:
+  > En Google Cloud, activamos VPC Flow Logs en la subred de GKE, registrando flujos IP reales, clasificando el tráfico entre Norte-Sur y Este-Oeste, y detectando anomalías volumétricas.
+  > En AWS, identificamos que la SCP organizacional aplicaba restricción regional sobre us-east-1, por lo que desplegamos exitosamente en us-east-2 (Ohio). Allí habilitamos AWS VPC Flow Logs hacia CloudWatch Logs, evidenciando paquetes reales rechazados (REJECT) por el Security Group de RDS, lo que confirma tanto el monitoreo continuo de red como el principio de mínimo privilegio en seguridad."
 
 ---
 
@@ -91,9 +91,10 @@ kubectl port-forward svc/service-a -n otel-lab 8000:8000 &
 ### **Minuto 7:30 - 8:30 | Blueprint de Madurez, Roadmap y Cierre (Módulo E)**
 * **Qué mostrar en pantalla:** El documento `docs/BLUEPRINT-MADUREZ.md` y la estructura final del repositorio.
 * **Qué decir:**
-  > "Para finalizar, en el Módulo E consolidamos el Blueprint de Madurez evaluando 8 dominios de observabilidad. Nuestro sistema alcanzó un nivel promedio de 3.8 sobre 5.0, destacándose en resiliencia e instrumentación OTel.
-  > Planteamos una hoja de ruta a 3 meses: Mes 1 para resolver gobierno AWS y estabilización de IaC; Mes 2 para AIOps en tiempo real y service mesh L7; y Mes 3 para Game Days continuos y FinOps.
+  > "Para finalizar, en el Módulo E consolidamos el Blueprint de Madurez evaluando 8 dominios de observabilidad. La suma de los ocho dominios evaluados totaliza 31 puntos, alcanzando un nivel promedio exacto de 3.875, que redondea a **3.9 sobre 5.0**, posicionando a la organización en el Nivel Definido en transición a Medido e Integrado.
+  > Planteamos una hoja de ruta a 3 meses para avanzar al Nivel 4.5: Mes 1 enfocado en automatización CI/CD de Chaos y observabilidad continua; Mes 2 para motor AIOps en streaming y Cloud Service Mesh L7 con mTLS; y Mes 3 para observabilidad de negocio y FinOps.
   > Toda la infraestructura como código, manifiestos, scripts y evidencias se encuentran versionados en el repositorio público de GitHub bajo el tag v1.0. Muchas gracias."
+
 
 ---
 

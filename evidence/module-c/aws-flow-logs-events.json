@@ -1,0 +1,80 @@
+{
+  "resource_type": "AWS::VPC::FlowLog",
+  "account_id": "006209503071",
+  "region": "us-east-2",
+  "log_group": "/aws/vpc/otel-lab-flow-logs",
+  "log_stream": "eni-0402db9c75cd153d3-all",
+  "captured_at_utc": "2026-10-18T17:50:00Z",
+  "description": "Real VPC Flow Log records captured directly from CloudWatch Logs stream eni-0402db9c75cd153d3-all demonstrating network observability and security group rejection of unauthorized external traffic.",
+  "events_sample": [
+    {
+      "timestamp": 1792345633000,
+      "src_ip": "85.217.140.41",
+      "dst_ip": "10.0.2.170",
+      "src_port": 57208,
+      "dst_port": 31749,
+      "protocol": 6,
+      "packets": 1,
+      "bytes": 52,
+      "action": "REJECT",
+      "log_status": "OK"
+    },
+    {
+      "timestamp": 1792345633000,
+      "src_ip": "35.203.210.221",
+      "dst_ip": "10.0.2.170",
+      "src_port": 50050,
+      "dst_port": 9420,
+      "protocol": 6,
+      "packets": 1,
+      "bytes": 44,
+      "action": "REJECT",
+      "log_status": "OK"
+    },
+    {
+      "timestamp": 1792345633000,
+      "src_ip": "47.77.230.166",
+      "dst_ip": "10.0.2.170",
+      "src_port": 39759,
+      "dst_port": 60001,
+      "protocol": 6,
+      "packets": 1,
+      "bytes": 52,
+      "action": "REJECT",
+      "log_status": "OK"
+    },
+    {
+      "timestamp": 1792345661000,
+      "src_ip": "45.148.10.230",
+      "dst_ip": "10.0.2.170",
+      "src_port": 58912,
+      "dst_port": 22,
+      "protocol": 6,
+      "packets": 1,
+      "bytes": 40,
+      "action": "REJECT",
+      "log_status": "OK"
+    },
+    {
+      "timestamp": 1792345661000,
+      "src_ip": "40.124.168.230",
+      "dst_ip": "10.0.2.170",
+      "src_port": 59438,
+      "dst_port": 80,
+      "protocol": 6,
+      "packets": 1,
+      "bytes": 52,
+      "action": "REJECT",
+      "log_status": "OK"
+    }
+  ],
+  "raw_events": [
+    "2 006209503071 eni-0402db9c75cd153d3 85.217.140.41 10.0.2.170 57208 31749 6 1 52 1792345633 1792345658 REJECT OK",
+    "2 006209503071 eni-0402db9c75cd153d3 35.203.210.221 10.0.2.170 50050 9420 6 1 44 1792345633 1792345658 REJECT OK",
+    "2 006209503071 eni-0402db9c75cd153d3 47.77.230.166 10.0.2.170 39759 60001 6 1 52 1792345633 1792345658 REJECT OK",
+    "2 006209503071 eni-0402db9c75cd153d3 109.234.166.42 10.0.2.170 80 46308 6 1 40 1792345633 1792345658 REJECT OK",
+    "2 006209503071 eni-0402db9c75cd153d3 162.216.150.249 10.0.2.170 50730 9228 6 1 44 1792345633 1792345658 REJECT OK",
+    "2 006209503071 eni-0402db9c75cd153d3 45.148.10.230 10.0.2.170 58912 22 6 1 40 1792345661 1792345689 REJECT OK",
+    "2 006209503071 eni-0402db9c75cd153d3 40.124.168.230 10.0.2.170 59438 80 6 1 52 1792345661 1792345689 REJECT OK"
+  ]
+}

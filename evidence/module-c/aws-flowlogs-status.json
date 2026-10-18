@@ -1,0 +1,32 @@
+{
+    "FlowLogs": [
+        {
+            "CreationTime": "2026-10-18T16:40:50.054Z",
+            "DeliverLogsPermissionArn": "arn:aws:iam::006209503071:role/otel-aws-vpc-flow-logs-role",
+            "DeliverLogsStatus": "SUCCESS",
+            "FlowLogId": "fl-063021b836eebcb40",
+            "FlowLogStatus": "ACTIVE",
+            "LogGroupName": "/aws/vpc/otel-lab-flow-logs",
+            "ResourceId": "vpc-08ae89a92bf8dfef6",
+            "TrafficType": "ALL",
+            "LogDestinationType": "cloud-watch-logs",
+            "LogDestination": "arn:aws:logs:us-east-2:006209503071:log-group:/aws/vpc/otel-lab-flow-logs",
+            "LogFormat": "${version} ${account-id} ${interface-id} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${protocol} ${packets} ${bytes} ${start} ${end} ${action} ${log-status}",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "otel-multicloud-aiops-resilience-lab"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "laboratory"
+                },
+                {
+                    "Key": "ManagedBy",
+                    "Value": "Terraform"
+                }
+            ],
+            "MaxAggregationInterval": 600
+        }
+    ]
+}

@@ -436,17 +436,17 @@
         <span class="header-doc">Módulo A · Requisito A-07</span>
       </div>
       <h2>1. Traza Distribuida End-to-End en Jaeger (17 Spans Validados)</h2>
-      <p>Se ejecutó la prueba de integración sobre el clúster GKE y se capturó la traza <code>ace4862048aa006720d67b80551e895f</code> en Jaeger, evidenciando la participación síncrona de los tres microservicios y las operaciones de base de datos:</p>
+      <p>Se ejecutó la prueba de integración sobre el clúster GKE y se capturó la traza <code>37816e898ccb783a2a71f1349fac1da5</code> en Jaeger, evidenciando la participación síncrona de los tres microservicios y la conexión a bases de datos gestionadas (Cloud SQL en GCP y AWS RDS):</p>
 
       <div class="card card-accent" style="margin-bottom:8px;">
         <strong>Jerarquía y Desglose de Spans (Archivo: <code>evidence/module-a/trace-end-to-end-full.json</code>):</strong>
         <ol style="font-size:7.8pt; margin-bottom:0;">
           <li><code>service-a</code>: <code>GET /order/{order_id}/observed</code> (Root Span - HTTP Gateway)</li>
-          <li>&nbsp;&nbsp;&boxur; <code>service-a</code>: <code>fetch.order.db</code> &rarr; <code>SELECT</code> (Consulta PostgreSQL orden <code>ord-001</code>)</li>
+          <li>&nbsp;&nbsp;&boxur; <code>service-a</code>: <code>fetch.order.db</code> &rarr; <code>SELECT</code> (Consulta base de datos orden <code>ord-001</code>)</li>
           <li>&nbsp;&nbsp;&boxur; <code>service-a</code>: <code>call.service-b.inventory</code> (Llamada HTTP cliente con propagación W3C)</li>
           <li>&nbsp;&nbsp;&nbsp;&nbsp;&boxur; <code>service-b</code>: <code>GET /inventory/{product_id}</code> &rarr; <code>inventory.cache.hit</code> (Respuesta inventario)</li>
           <li>&nbsp;&nbsp;&boxur; <code>service-a</code>: <code>GET /data/gcp http send</code> (Invocación HTTP hacia Data Service)</li>
-          <li>&nbsp;&nbsp;&nbsp;&nbsp;&boxur; <code>data-service</code>: <code>GET /data/{backend}</code> &rarr; <code>data.read</code> &rarr; <code>SELECT</code> (Consulta persistencia)</li>
+          <li>&nbsp;&nbsp;&nbsp;&nbsp;&boxur; <code>data-service</code>: <code>GET /data/{backend}</code> &rarr; <code>data.read</code> &rarr; <code>SELECT</code> (Consulta en Cloud SQL <code>34.56.188.238:5432/appdb</code>)</li>
         </ol>
       </div>
 
@@ -506,8 +506,8 @@
 
       <p>Donde la línea base estadística calcula la media poblacional (&mu;) y la desviación estándar (&sigma;) sobre un histórico de ventanas móviles estables, mientras que el SLO de latencia P99 se fijó en <strong>200 ms</strong>. Si ocurre un pico de latencia sin errores (jitter de red transitorio), la regla AND <strong>no dispara alerta</strong>, considerándolo tráfico no degradante.</p>
 
-      <h2>2. Benchmark Cuantitativo de Reducción de Ruido (70.0% Comprobado)</h2>
-      <p>Para satisfacer el criterio B-05 ("demostrar si se reduce el ruido frente a reglas estáticas"), se ejecutó un benchmark cuantitativo sobre 15 ventanas temporales simulando condiciones de producción (archivo: <code>evidence/module-b/noise-reduction-evidence.json</code>):</p>
+      <h2>2. Benchmark Cuantitativo de Reducción de Ruido (70.0% Canónico y Datos Observados)</h2>
+      <p>Para satisfacer el criterio B-05, se evaluó la reducción de ruido mediante un benchmark sintético canónico de 15 ventanas simuladas que replican 5 fases operacionales (70.0% de reducción), complementado con la telemetría observada en vivo durante los experimentos de Chaos Engineering en GKE (E1 y E2, donde se suprimió el 100% de las falsas alarmas por jitter transitorio y se detectó el 100% del incidente real, logrando 42.86% de reducción global observada) (archivo: <code>evidence/module-b/noise-reduction-evidence.json</code>):</p>
 
       <table>
         <thead>
@@ -639,7 +639,7 @@
         <strong>Estado de Servicios de Seguridad Gestionados:</strong>
         <ul>
           <li><strong>GCP Security Command Center (SCC):</strong> Se verificó la disponibilidad de la API <code>securitycenter.googleapis.com</code>. En el nivel estándar del proyecto se reporta estado sin hallazgos críticos de configuración en los nodos del clúster GKE.</li>
-          <li><strong>AWS VPC Flow Logs & CloudWatch:</strong> Recurso <code>aws_flow_log.main</code> (<code>fl-063021b836eebcb40</code>) desplegado y activo en <code>us-east-2</code>, ingiriendo telemetría de paquetes y flujos hacia el grupo CloudWatch <code>/aws/vpc/otel-lab-flow-logs</code>.</li>
+          <li><strong>AWS VPC Flow Logs & CloudWatch:</strong> Recurso <code>aws_flow_log.main</code> (<code>fl-063021b836eebcb40</code>) desplegado y activo en <code>us-east-2</code>, registrando paquetes reales con eventos de rechazo (<code>REJECT</code>) por Security Group hacia CloudWatch Logs (archivo: <code>evidence/module-c/aws-flow-logs-events.json</code>). Se documentó la delimitación regional de la SCP institucional.</li>
         </ul>
       </div>
     </div>
@@ -883,8 +883,8 @@
           <tr>
             <td><strong>D6</strong></td>
             <td><strong>Observabilidad de Red y Seguridad</strong></td>
-            <td><strong>4.0</strong></td>
-            <td>VPC Flow Logs habilitados e ingiriendo tráfico real tanto en GCP como en AWS CloudWatch. Clasificación N-S vs E-W y detección de anomalías de volumen.</td>
+            <td><strong>3.5</strong></td>
+            <td>VPC Flow Logs habilitados e ingiriendo tráfico real en GCP y AWS CloudWatch. Clasificación N-S vs E-W y detección de anomalías volumétricas.</td>
           </tr>
           <tr>
             <td><strong>D7</strong></td>
@@ -895,8 +895,8 @@
           <tr>
             <td><strong>D8</strong></td>
             <td><strong>Operación de Plataforma e IaC</strong></td>
-            <td><strong>5.0</strong></td>
-            <td>Infraestructura 100% declarada y desplegada en vivo mediante Terraform modular para GCP y AWS (19 recursos en us-east-2), orientada a eficiencia de costos.</td>
+            <td><strong>4.0</strong></td>
+            <td>Infraestructura declarada y desplegada mediante Terraform modular para GCP y AWS (19 recursos en us-east-2), orientada a eficiencia de costos y seguridad.</td>
           </tr>
         </tbody>
       </table>
@@ -904,8 +904,8 @@
       <div class="card card-success" style="margin-top:10px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div>
-            <strong style="font-size:11pt; color:#15803d;">Puntuación Global de Madurez: 4.1 / 5.0</strong><br>
-            <span>Clasificación: <strong>Nivel Medido e Integrado (Alcanzado)</strong></span>
+            <strong style="font-size:11pt; color:#15803d;">Puntuación Global de Madurez: 3.9 / 5.0</strong><br>
+            <span>Clasificación: <strong>Nivel Definido / En transición a Medido e Integrado (31 / 8 = 3.875)</strong></span>
           </div>
           <div style="font-size:8pt; color:#334155;">
             Cumple íntegramente la totalidad de los requisitos técnicos multicloud de la maestría.

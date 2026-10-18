@@ -1,0 +1,26 @@
+{
+  "module": "A",
+  "requirement": "Cloud SQL PostgreSQL Managed Service Connectivity & Distributed Trace",
+  "instance_name": "otel-cloudsql-postgres",
+  "gcp_project": "project-138a5e79-5342-4c60-94f",
+  "gcp_region": "us-central1",
+  "endpoint": "34.56.188.238:5432",
+  "database": "appdb",
+  "db_user": "oteluser",
+  "connectivity_probe_utc": "2026-10-18T18:01:24Z",
+  "status_code": 200,
+  "response": {
+    "backend": "gcp",
+    "database": "appdb",
+    "probe": 1,
+    "trace_id": "37816e898ccb783a2a71f1349fac1da5"
+  },
+  "authorized_networks": [
+    "34.41.148.106/32 (GKE Node 1)",
+    "34.135.197.253/32 (GKE Node 2)",
+    "186.84.21.83/32 (Authorized Management IP)"
+  ],
+  "associated_trace_id": "37816e898ccb783a2a71f1349fac1da5",
+  "spans_count": 17,
+  "validation_result": "SUCCESSFUL_LIVE_CONNECTION"
+}
