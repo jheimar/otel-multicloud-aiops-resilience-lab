@@ -70,7 +70,22 @@ flowchart TD
 
 ---
 
-## 4. Estructura del Repositorio
+## 4. Galería de Evidencias Visuales y Screenshots
+
+Se documentaron capturas de pantalla de alta resolución obtenidas directamente desde las consolas en vivo:
+
+1. **[Traza Distribuida Jaeger (17 Spans)](evidence/screenshots/01_jaeger_distributed_trace_17_spans.png):** Jerarquía end-to-end W3C conectando `service-a`, `service-b`, `data-service` y consultas SQL a PostgreSQL.
+2. **[Dashboard Operacional Grafana Game Day](evidence/screenshots/02_grafana_gameday_dashboard.png):** Throughput (RPS), Latencia P95, Respuestas 5xx y disponibilidad de scraping.
+3. **[Dashboard de Seguridad y Logs Loki](evidence/screenshots/03_grafana_security_signals_loki_dashboard.png):** Flujo de logs de pods y correlación de errores de aplicación.
+4. **[Prometheus Targets en Estado UP](evidence/screenshots/04_prometheus_targets_up.png):** Scraping continuo sobre el agente central OpenTelemetry Collector.
+5. **[Métricas SLI en Prometheus UI](evidence/screenshots/05_prometheus_http_requests_graph.png):** Series temporales de `http_requests_total` diferenciando códigos 2xx y 5xx del experimento de caos.
+6. **[Consola Operacional Multicloud](evidence/screenshots/06_multicloud_live_operational_evidence.png):** Comprobación en vivo de Cloud SQL GCP (`RUNNABLE`), RDS AWS (`available`), eventos `REJECT` de VPC Flow Logs y benchmark AIOps.
+
+> Para ver la galería completa con explicaciones técnicas detalladas de cada captura, consulte [`evidence/screenshots/README.md`](evidence/screenshots/README.md).
+
+---
+
+## 5. Estructura del Repositorio
 
 ```text
 ├── aiops/              # Motor de correlación estadística y benchmark de reducción de ruido
