@@ -1,0 +1,21 @@
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: otel-microservices-monitoring
+  namespace: otel-lab
+  labels:
+    app.kubernetes.io/name: otel-microservices-monitoring
+    app.kubernetes.io/part-of: otel-multicloud-aiops-resilience-lab
+spec:
+  selector:
+    matchExpressions:
+    - key: app
+      operator: In
+      values:
+      - service-a
+      - service-b
+      - data-service
+  endpoints:
+  - port: 8000
+    path: /metrics
+    interval: 30s

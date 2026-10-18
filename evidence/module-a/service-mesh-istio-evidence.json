@@ -1,0 +1,71 @@
+{
+  "module": "A",
+  "requirement": "Service Mesh L7 Implementation and Verification",
+  "mesh_type": "Istio Service Mesh (Envoy L7 Data Plane)",
+  "control_plane": {
+    "component": "istiod",
+    "version": "1.30.6",
+    "namespace": "istio-system",
+    "status": "Running",
+    "helm_release": "istiod-1.30.6"
+  },
+  "data_plane": {
+    "proxy_type": "Envoy Sidecar",
+    "injection_method": "Namespace auto-injection (istio-injection=enabled)",
+    "instrumented_pods": [
+      {
+        "deployment": "service-a",
+        "containers": ["service-a", "istio-proxy"],
+        "ready": "2/2",
+        "status": "Running"
+      },
+      {
+        "deployment": "service-b",
+        "containers": ["service-b", "istio-proxy"],
+        "ready": "2/2",
+        "status": "Running"
+      },
+      {
+        "deployment": "data-service",
+        "containers": ["data-service", "istio-proxy"],
+        "ready": "2/2",
+        "status": "Running"
+      }
+    ]
+  },
+  "l7_traffic_policies": [
+    {
+      "resource": "PeerAuthentication",
+      "name": "default",
+      "namespace": "otel-lab",
+      "mtls_mode": "PERMISSIVE / ISTIO_MUTUAL"
+    },
+    {
+      "resource": "DestinationRule",
+      "name": "service-b-l7-policy",
+      "features": ["ISTIO_MUTUAL TLS", "Circuit Breaking (consecutive5xxErrors: 3)", "Outlier Detection"]
+    },
+    {
+      "resource": "DestinationRule",
+      "name": "data-service-l7-policy",
+      "features": ["ISTIO_MUTUAL TLS", "Connection Pooling", "Outlier Detection"]
+    },
+    {
+      "resource": "VirtualService",
+      "name": "service-b-routes",
+      "features": ["L7 URI matching /inventory/", "Timeout 3s", "Retries on 5xx (2 attempts)"]
+    },
+    {
+      "resource": "VirtualService",
+      "name": "data-service-routes",
+      "features": ["L7 URI matching /data/", "Timeout 5s"]
+    }
+  ],
+  "verification_execution": {
+    "timestamp_utc": "2026-10-18T20:45:49Z",
+    "target_endpoint": "http://service-a:8000/order/ord-001/observed",
+    "http_status": 200,
+    "trace_id": "0b43288271f820a0cc4397ae7421cacb",
+    "envoy_proxy_status": "workload certificate loaded, ADS connection active, ready"
+  }
+}

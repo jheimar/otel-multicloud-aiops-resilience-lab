@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-10-18T21:21:29Z",
+  "provider": "GCP",
+  "project_id": "project-138a5e79-5342-4c60-94f",
+  "component": "Google Cloud Monitoring Alert Policy (Module B)",
+  "status": "OPERATIONAL_AND_VERIFIED",
+  "policy_name": "projects/project-138a5e79-5342-4c60-94f/alertPolicies/8026746357520380235",
+  "display_name": "AIOps-Lab: Microservices Latency Degradation (> 200ms SLO)",
+  "enabled": true,
+  "condition": {
+    "display_name": "GKE Microservices High Resource / Latency Anomaly",
+    "filter": "resource.type = \"k8s_container\" AND metric.type = \"kubernetes.io/container/cpu/core_usage_time\"",
+    "comparison": "COMPARISON_GT",
+    "threshold": 0.8,
+    "duration": "60s",
+    "aggregation": {
+      "alignment_period": "60s",
+      "per_series_aligner": "ALIGN_RATE"
+    }
+  },
+  "pod_monitoring_scraper": {
+    "crd": "podmonitorings.monitoring.googleapis.com",
+    "name": "otel-microservices-monitoring",
+    "namespace": "otel-lab",
+    "scraped_services": ["service-a", "service-b", "data-service"],
+    "port": 8000,
+    "path": "/metrics"
+  },
+  "verification_details": {
+    "policy_active_in_cloud_console": true,
+    "gmp_scraping_enabled": true
+  }
+}

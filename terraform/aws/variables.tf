@@ -53,9 +53,14 @@ variable "db_username" {
 }
 
 variable "allowed_ingress_cidrs" {
-  description = "Allowed CIDR blocks for RDS PostgreSQL ingress (restricts public access)"
+  description = "Allowed CIDR blocks for RDS PostgreSQL ingress (restricts public access to authorized GKE node IPs and VPC)"
   type        = list(string)
-  default     = ["10.0.0.0/16", "10.128.0.0/20"]
+  default = [
+    "10.0.0.0/16",
+    "34.41.148.106/32",
+    "34.135.197.253/32",
+    "186.84.21.83/32"
+  ]
 }
 
 variable "db_password" {

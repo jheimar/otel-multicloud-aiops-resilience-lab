@@ -1,0 +1,77 @@
+{
+  "module": "C",
+  "requirement": "Multicloud Security Findings and Vulnerability Assessment",
+  "evaluation_date_utc": "2026-10-18T20:47:00Z",
+  "summary": {
+    "total_findings": 41,
+    "critical": 0,
+    "high": 12,
+    "medium": 21,
+    "low": 8
+  },
+  "cloud_security_services_audit": {
+    "gcp_security_command_center": {
+      "status": "EVALUATED",
+      "findings_query": "securitycenter.googleapis.com",
+      "tier": "Standard / Sandbox Tier",
+      "status_detail": "API requiere nivel Enterprise/Organization para exportación automatizada de hallazgos en tiempo real a Cloud Logging. Evaluado mediante auditoría estática y verificación de políticas de red de GKE."
+    },
+    "aws_security_hub": {
+      "status": "EVALUATED_RESTRICTED",
+      "service": "aws securityhub get-findings",
+      "scp_restriction": "Policy p-12dfq6mh / p-zsz1ecbo (o-23lsnac3z9)",
+      "status_detail": "Acceso restringido por Service Control Policy de la cuenta raíz institucional (495209412601). Seguridad auditada a nivel de VPC Flow Logs (REJECT actions) e inspección de configuración IaC."
+    }
+  },
+  "cve_and_misconfiguration_audit": {
+    "scanner": "Trivy v0.49+ (Aquasecurity Vulnerability & IaC Engine)",
+    "targets_scanned": [
+      "kubernetes/data-service.yaml",
+      "services/data-service/Dockerfile",
+      "services/service-a/Dockerfile",
+      "services/service-b/Dockerfile",
+      "terraform/aws/rds.tf",
+      "terraform/aws/security_groups.tf",
+      "terraform/aws/vpc.tf",
+      "terraform/gcp/cloud_sql.tf",
+      "terraform/gcp/gke.tf"
+    ],
+    "top_findings": [
+      {
+        "id": "KSV014",
+        "target": "kubernetes/data-service.yaml",
+        "severity": "HIGH",
+        "title": "Root file system is not read-only",
+        "resolution": "Change containers[].securityContext.readOnlyRootFilesystem to true."
+      },
+      {
+        "id": "AVD-AWS-0133",
+        "target": "terraform/aws/rds.tf",
+        "severity": "HIGH",
+        "title": "RDS Instance without Storage Encryption",
+        "resolution": "Enable storage_encrypted on aws_db_instance resource."
+      },
+      {
+        "id": "AVD-GCP-0008",
+        "target": "terraform/gcp/cloud_sql.tf",
+        "severity": "HIGH",
+        "title": "Cloud SQL requires SSL enforcement",
+        "resolution": "Configure require_ssl = true in ip_configuration settings."
+      },
+      {
+        "id": "KSV001",
+        "target": "kubernetes/data-service.yaml",
+        "severity": "MEDIUM",
+        "title": "Container can elevate its own privileges",
+        "resolution": "Set containers[].securityContext.allowPrivilegeEscalation to false."
+      },
+      {
+        "id": "AVD-AWS-0104",
+        "target": "terraform/aws/security_groups.tf",
+        "severity": "MEDIUM",
+        "title": "Security group ingress restricted to authorized CIDRs",
+        "resolution": "Ensure allowed_ingress_cidrs does not include 0.0.0.0/0 (Remediated in v1.0)."
+      }
+    ]
+  }
+}

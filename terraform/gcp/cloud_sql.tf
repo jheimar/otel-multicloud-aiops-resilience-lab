@@ -17,9 +17,12 @@ resource "google_sql_database_instance" "postgres" {
 
     ip_configuration {
       ipv4_enabled = true
-      authorized_networks {
-        name  = "gke-subnet-authorized"
-        value = var.allowed_authorized_network
+      dynamic "authorized_networks" {
+        for_each = var.authorized_networks
+        content {
+          name  = authorized_networks.value.name
+          value = authorized_networks.value.value
+        }
       }
     }
 

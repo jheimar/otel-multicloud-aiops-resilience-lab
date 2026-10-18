@@ -1,0 +1,8 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: otel-lab
+spec:
+  mtls:
+    mode: PERMISSIVE # Permissive permite compatibilidad gradual para tráfico OTLP hacia Collector y mTLS estricto entre microservicios

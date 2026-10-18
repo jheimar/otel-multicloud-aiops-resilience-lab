@@ -1,0 +1,43 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: service-b-routes
+  namespace: otel-lab
+spec:
+  hosts:
+    - service-b.otel-lab.svc.cluster.local
+    - service-b
+  http:
+    - match:
+        - uri:
+            prefix: /inventory/
+      route:
+        - destination:
+            host: service-b.otel-lab.svc.cluster.local
+            port:
+              number: 8001
+      timeout: 3s
+      retries:
+        attempts: 2
+        perTryTimeout: 1s
+        retryOn: "5xx,connect-failure,refused-stream"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: data-service-routes
+  namespace: otel-lab
+spec:
+  hosts:
+    - data-service.otel-lab.svc.cluster.local
+    - data-service
+  http:
+    - match:
+        - uri:
+            prefix: /data/
+      route:
+        - destination:
+            host: data-service.otel-lab.svc.cluster.local
+            port:
+              number: 8002
+      timeout: 5s

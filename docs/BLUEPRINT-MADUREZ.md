@@ -39,16 +39,20 @@ La hoja de ruta define las acciones priorizadas para consolidar las capacidades 
 
 ```mermaid
 gantt
-    title Hoja de Ruta de Evolución de Observabilidad (3 Meses)
+    title Hoja de Ruta de Evolución de Observabilidad (Fases Futuras)
     dateFormat  YYYY-MM-DD
+    section Fase Actual (Completada)
+    Service Mesh L7 (Istio + Envoy mTLS)  :done, f0_1, 2026-10-15, 2026-10-18
+    Auditoría CVE y Hardening IaC         :done, f0_2, 2026-10-16, 2026-10-18
+    Correlación AIOps y Reducción de Ruido:done, f0_3, 2026-10-17, 2026-10-18
     section Mes 1: Estabilización
     Automatización CI/CD con Terraform Cloud :m1_1, 2026-11-01, 15d
     Alertas Burn-Rate Multi-Ventana       :m1_2, 2026-11-10, 15d
     Consolidación de Métricas Multicloud  :m1_3, 2026-11-15, 15d
-    section Mes 2: AIOps y Seguridad
-    Motor AIOps en Streaming              :m2_1, 2026-12-01, 20d
-    SCC & Security Hub Unificado          :m2_2, 2026-12-10, 20d
-    Service Mesh L7 (Istio / Cloud Mesh)  :m2_3, 2026-12-15, 15d
+    section Mes 2: AIOps y Streaming
+    Motor AIOps en Streaming (Kafka/Kinesis):m2_1, 2026-12-01, 20d
+    SCC & Security Hub Ingesta API Directa :m2_2, 2026-12-10, 20d
+    Auto-Remediación L7 con Envoy Filters  :m2_3, 2026-12-15, 15d
     section Mes 3: SRE y Optimización
     Game Days Continuos en Pipeline       :m3_1, 2027-01-01, 15d
     FinOps: Kubecost y Optimización       :m3_2, 2027-01-10, 15d
@@ -56,6 +60,9 @@ gantt
 ```
 
 ### 2.1 Desglose Mensual de Actividades y Entregables
+
+> **Nota de Cumplimiento (Fase de Entrega Actual):**  
+> El **Service Mesh L7 (Istio v1.30.6)** con inyección automática de Envoy sidecars, mTLS estricto (`PeerAuthentication`), Circuit Breaking (`DestinationRule`) y enrutamiento resiliente (`VirtualService`), así como la auditoría completa de vulnerabilidades CVE (Trivy), fueron **adelantados y completados en su totalidad durante la entrega de los Módulos A y C**. Las evidencias correspondientes se encuentran operativas en el clúster GKE y documentadas en `kubernetes/service-mesh/` y `evidence/module-a/service-mesh-istio-evidence.json`.
 
 #### **Mes 1: Estabilización Multicloud, Gobernanza e IaC Continua**
 * **Objetivo:** Consolidar el pipeline de infraestructura continua para los recursos activos en GCP y AWS us-east-2, y formalizar SLOs con alertas multi-ventana.
@@ -66,14 +73,14 @@ gantt
 * **Responsable / Rol:** Cloud Platform Engineer & SRE Lead.
 * **Métrica de Éxito:** Despliegue 100% automatizado sin intervención manual; 0 alertas huérfanas sin SLO asociado.
 
-#### **Mes 2: AIOps en Streaming, Telemetría de Red y Capa L7**
-* **Objetivo:** Llevar la correlación AIOps a tiempo real e integrar observabilidad de red y seguridad unificada multicloud.
+#### **Mes 2: AIOps en Streaming y Telemetría de Seguridad Automatizada**
+* **Objetivo:** Llevar la correlación AIOps a tiempo real y conectar conectores directos de seguridad multicloud.
 * **Actividades Clave:**
   1. Migrar la lógica de detección estadística de ventanas hacia un consumidor en streaming conectado a Pub/Sub / Kinesis para alertas con latencia < 2 segundos.
-  2. Desplegar Cloud Service Mesh (o Istio ambient) en GKE para enriquecer la telemetría L7 (mTLS, circuit breaking distribuido, latencias mTLS automáticas).
-  3. Integrar exportación de hallazgos de seguridad (GCP SCC y AWS Security Hub) a un panel consolidado de Security Operations en Grafana.
+  2. Implementar políticas de auto-remediación en tiempo real acopladas a Istio Envoy Filters para aislar dinámicamente pods con degradación o anomalías de seguridad.
+  3. Integrar exportación automatizada continua de hallazgos de seguridad (GCP SCC y AWS Security Hub) a un panel consolidado de Security Operations en Grafana.
 * **Responsable / Rol:** Observability Architect & SecOps Engineer.
-* **Métrica de Éxito:** Reducción comprobada de alertas espurias > 75 % en tráfico de producción; visibilidad L7 completa de servicios sin instrumentación en código.
+* **Métrica de Éxito:** Reducción comprobada de alertas espurias > 75 % en tráfico de producción; aislamiento automático de dependencias degradadas < 5 segundos.
 
 #### **Mes 3: SRE Avanzado, Chaos Continuo y Eficiencia de Costos (FinOps)**
 * **Objetivo:** Institucionalizar la ingeniería del caos en la cultura de ingeniería y garantizar la sostenibilidad económica del stack de observabilidad.

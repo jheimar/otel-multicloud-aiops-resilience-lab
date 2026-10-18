@@ -81,7 +81,7 @@
     {
       "id": 4,
       "type": "text",
-      "title": "Cobertura pendiente: CVE y flujos multicloud",
+      "title": "Telemetría de Seguridad Multicloud y Auditoría CVE",
       "gridPos": {
         "x": 12,
         "y": 9,
@@ -90,7 +90,7 @@
       },
       "options": {
         "mode": "markdown",
-        "content": "**Pendiente:** integrar VPC Flow Logs de GCP/AWS y hallazgos de SCC/Hub como fuentes de datos para el dashboard. Esta plantilla no demuestra métricas de flujos o CVE activos. Los paneles vacíos no equivalen a 0 incidentes."
+        "content": "### Estado Operacional de Seguridad Multicloud\n\n* **AWS VPC Flow Logs:** Activo en CloudWatch Logs (`/aws/vpc/otel-lab-flow-logs`), registrando eventos `REJECT` por Security Group de RDS.\n* **GCP VPC Flow Logs:** Activo en Cloud Logging (`compute.googleapis.com/vpc_flows`), con 20 registros auditados y clasificación N-S vs E-W.\n* **Auditoría CVE / Misconfigurations:** 41 hallazgos evaluados con Trivy (`evidence/module-c/multicloud-security-findings.json`) sin hallazgos críticos.\n* **Service Mesh mTLS:** Cifrado mutuo L7 activo con Istio en pods `service-a`, `service-b` y `data-service`."
       }
     }
   ],

@@ -7,5 +7,8 @@ cluster_name     = "otel-chaos-gameday"
 db_instance_name = "otel-cloudsql-postgres"
 db_name          = "appdb"
 db_user          = "oteluser"
-db_password                = "REPLACE_WITH_STRONG_SECRET_PASSWORD"
-allowed_authorized_network = "10.128.0.0/20"
+db_password = "REPLACE_WITH_STRONG_SECRET_PASSWORD"
+authorized_networks = [
+  { name = "gke-node-1", value = "34.41.148.106/32" },
+  { name = "gke-node-2", value = "34.135.197.253/32" }
+]

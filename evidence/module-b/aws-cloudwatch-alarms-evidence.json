@@ -1,0 +1,49 @@
+{
+  "timestamp": "2026-10-18T21:18:01Z",
+  "provider": "AWS",
+  "region": "us-east-2",
+  "component": "AWS CloudWatch Alarms (Module B)",
+  "status": "OPERATIONAL_AND_VERIFIED",
+  "metric_namespace": "AWS/RDS",
+  "target_resource": "otel-rds-postgres",
+  "notification_topic_arn": "arn:aws:sns:us-east-2:006209503071:otel-aws-aiops-alerts",
+  "alarms": [
+    {
+      "name": "AIOps-Lab-AWS: Low Freeable Memory (< 100MB)",
+      "metric": "FreeableMemory",
+      "threshold": 104857600,
+      "state": "OK",
+      "state_reason": "Threshold Crossed: 1 datapoint [1.54906624E8 (18/10/26 20:38:00)] was not less than the threshold (1.048576E8).",
+      "alarm_actions": [
+        "arn:aws:sns:us-east-2:006209503071:otel-aws-aiops-alerts"
+      ],
+      "ok_actions": [
+        "arn:aws:sns:us-east-2:006209503071:otel-aws-aiops-alerts"
+      ],
+      "dimensions": {
+        "DBInstanceIdentifier": "otel-rds-postgres"
+      }
+    },
+    {
+      "name": "AIOps-Lab-AWS: RDS High CPU (> 80%)",
+      "metric": "CPUUtilization",
+      "threshold": 80.0,
+      "state": "OK",
+      "state_reason": "Threshold Crossed: 2 datapoints [3.65%, 4.39%] were not greater than the threshold (80.0).",
+      "alarm_actions": [
+        "arn:aws:sns:us-east-2:006209503071:otel-aws-aiops-alerts"
+      ],
+      "ok_actions": [
+        "arn:aws:sns:us-east-2:006209503071:otel-aws-aiops-alerts"
+      ],
+      "dimensions": {
+        "DBInstanceIdentifier": "otel-rds-postgres"
+      }
+    }
+  ],
+  "verification_details": {
+    "evaluation_status": "EVALUATING_REAL_DATAPOINTS",
+    "insufficient_data_resolved": true,
+    "notification_actions_enabled": true
+  }
+}

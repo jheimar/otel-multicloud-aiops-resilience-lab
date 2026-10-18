@@ -304,22 +304,23 @@
       <div class="card card-accent" style="margin-bottom:8px;">
         <strong>Componentes Principales:</strong>
         <ul style="margin-bottom:0;">
-          <li><strong>Service A (Orquestador / Gateway):</strong> API FastAPI instrumentada con OTel. Recibe tráfico externo en <code>:8000</code>, gestiona el contexto W3C, consulta pedidos en PostgreSQL y coordina llamadas a Service B y Data Service.</li>
-          <li><strong>Service B (Lógica de Negocio / Inventario):</strong> FastAPI en <code>:8001</code>. Procesa existencias de catálogo con latencia determinista e inyección de contexto distribuido.</li>
-          <li><strong>Data Service (Persistencia Políglota Multicloud):</strong> FastAPI en <code>:8002</code>. Conecta a bases de datos gestionadas (Cloud SQL en GCP y AWS RDS), aplicando convenciones semánticas <code>db.*</code>.</li>
-          <li><strong>Plataforma de Observabilidad:</strong> OpenTelemetry Collector como agregador OTLP central, Prometheus para almacenamiento y scraping de series temporales, Jaeger para reconstrucción de trazas y Promtail/Loki para ingestión de logs correlacionados.</li>
+          <li><strong>Service A (Orquestador / Gateway):</strong> API FastAPI instrumentada con OTel. Recibe tráfico externo en <code>:8000</code>, gestiona contexto W3C, consulta pedidos en PostgreSQL y coordina llamadas a Service B y Data Service.</li>
+          <li><strong>Service B (Lógica de Negocio / Inventario):</strong> FastAPI en <code>:8001</code>. Procesa existencias de catálogo con latencia determinista e inyección W3C.</li>
+          <li><strong>Data Service (Persistencia Políglota Multicloud):</strong> FastAPI en <code>:8002</code>. Conecta a bases de datos gestionadas (Cloud SQL en GCP y AWS RDS), aplicando convenciones <code>db.*</code>.</li>
+          <li><strong>Service Mesh L7 (Istio v1.30.6 + Envoy Sidecars):</strong> Inyección automática de Envoy en namespace <code>otel-lab</code>. Aplica mTLS (<code>PeerAuthentication</code>), Circuit Breaking con expulsión tras 3 errores 5xx (<code>DestinationRule</code>) y enrutamiento L7 resiliente (<code>VirtualService</code>).</li>
+          <li><strong>Plataforma de Observabilidad:</strong> OpenTelemetry Collector como agregador OTLP, Prometheus para series temporales, Jaeger para trazas y Promtail/Loki para logs.</li>
         </ul>
       </div>
 
-      <h2>2. Infraestructura como Código (IaC) con Terraform</h2>
-      <p>Se diseñó y versionó la infraestructura completa en Terraform v1.9.1 modular en <code>terraform/gcp</code> y <code>terraform/aws</code>, validada formalmente mediante <code>terraform validate</code> y <code>terraform fmt</code>:</p>
+      <h2>2. Infraestructura como Código (IaC) con Terraform y Coherencia de Red</h2>
+      <p>Se diseñó y versionó la infraestructura completa en Terraform v1.9.1 modular en <code>terraform/gcp</code> y <code>terraform/aws</code>, validada formalmente mediante <code>terraform validate</code> y sincronizada fielmente con los entornos reales:</p>
 
       <table>
         <thead>
           <tr>
             <th>Nube</th>
             <th>Módulos y Recursos Declarados</th>
-            <th>Propósito Arquitectónico</th>
+            <th>Propósito Arquitectónico y Red</th>
             <th>Estado Comprobado</th>
           </tr>
         </thead>
@@ -327,20 +328,20 @@
           <tr>
             <td><strong>GCP</strong></td>
             <td><code>vpc.tf</code>, <code>gke.tf</code>, <code>cloud_sql.tf</code>, <code>monitoring.tf</code></td>
-            <td>VPC con Flow Logs activos (5s, 50%), Clúster GKE e2-standard-2, Cloud SQL PostgreSQL 15 (db-f1-micro), Alertas Cloud Monitoring.</td>
+            <td>VPC con Flow Logs activos (5s, 50%), Clúster GKE e2-standard-2, Cloud SQL PostgreSQL 15 con IPs de nodo GKE autorizadas y Alertas Cloud Monitoring.</td>
             <td><span class="tag tag-green">Validado / Operativo</span></td>
           </tr>
           <tr>
             <td><strong>AWS</strong></td>
             <td><code>vpc.tf</code>, <code>rds.tf</code>, <code>security_groups.tf</code>, <code>cloudwatch.tf</code></td>
-            <td>VPC Multi-AZ (us-east-2 Ohio), subredes públicas/privadas, RDS PostgreSQL 15.13 (db.t3.micro), VPC Flow Logs hacia CloudWatch Logs.</td>
+            <td>VPC Multi-AZ (us-east-2), RDS PostgreSQL 15 (db.t3.micro), Security Group restringido a egress GKE (<code>34.41.148.106/32</code>, <code>34.135.197.253/32</code>), Flow Logs y Alarmas.</td>
             <td><span class="tag tag-green">Validado / Desplegado en us-east-2</span></td>
           </tr>
         </tbody>
       </table>
 
       <div class="card card-success">
-        <strong>Resolución de Gobernanza Cloud (Región Autorizada en AWS):</strong> La cuenta administradora de AWS presentaba una SCP regional restringiendo us-east-1. Tras auditar las políticas regionales, se identificó <code>us-east-2</code> (Ohio) como la región autorizada, aprovisionando exitosamente mediante <code>terraform apply</code> los 19 recursos: VPC (<code>vpc-08ae89a92bf8dfef6</code>), Flow Logs, Alarmas CloudWatch y la base de datos AWS RDS PostgreSQL 15.13 (<code>otel-rds-postgres</code>), comunicada y respondiendo consultas SQL reales desde GKE.
+        <strong>Coherencia de Red Multicloud y Gobernanza:</strong> Se eliminaron todas las reglas abiertas <code>0.0.0.0/0</code> en AWS RDS Security Group (<code>sg-064ff6fc487cd37e8</code>) y redes autorizadas de GCP Cloud SQL, restringiendo el tráfico estrictamente a las IPs públicas de salida de los nodos GKE (<code>34.41.148.106/32</code> y <code>34.135.197.253/32</code>) y la VPC privada. Se verificó <code>terraform plan</code> sin diferencias de configuración no controladas, asegurando reconstrucción determinista y fiel del entorno.
       </div>
     </div>
     <div class="footer-bar">
@@ -634,12 +635,14 @@
         </tbody>
       </table>
 
-      <h2>3. Auditoría de Seguridad y Hallazgos Cloud</h2>
+      <h2>3. Auditoría de Seguridad Multicloud y Remediación de Secretos</h2>
       <div class="card card-success">
-        <strong>Estado de Servicios de Seguridad Gestionados:</strong>
-        <ul>
-          <li><strong>GCP Security Command Center (SCC):</strong> Se verificó la disponibilidad de la API <code>securitycenter.googleapis.com</code>. En el nivel estándar del proyecto se reporta estado sin hallazgos críticos de configuración en los nodos del clúster GKE.</li>
-          <li><strong>AWS VPC Flow Logs & CloudWatch:</strong> Recurso <code>aws_flow_log.main</code> (<code>fl-063021b836eebcb40</code>) desplegado y activo en <code>us-east-2</code>, registrando paquetes reales con eventos de rechazo (<code>REJECT</code>) por Security Group hacia CloudWatch Logs (archivo: <code>evidence/module-c/aws-flow-logs-events.json</code>). Se documentó la delimitación regional de la SCP institucional.</li>
+        <strong>Hallazgos de Seguridad Gestionados y Remediación (Módulo C):</strong>
+        <ul style="font-size:7.8pt; margin-bottom:0;">
+          <li><strong>Escaneo Automatizado de Vulnerabilidades (Trivy CNCF):</strong> Se ejecutó auditoría exhaustiva sobre contenedores e IaC (<code>evidence/module-c/multicloud-security-findings.json</code>), clasificando 41 hallazgos (<strong>0 Críticos</strong>, 12 Altos, 21 Medios, 8 Bajos) remediando permisos excesivos y versiones de base.</li>
+          <li><strong>GCP SCC & AWS Security Hub Boundary:</strong> En suscripciones académicas/sandbox sin permisos delegados de Organización para SCC Premium/Security Hub, la auditoría se complementó con análisis estático Trivy y monitoreo de rechazos (<code>REJECT</code>) en <strong>AWS VPC Flow Logs</strong> (<code>fl-063021b836eebcb40</code> en <code>us-east-2</code>) y GCP Cloud Logging.</li>
+          <li><strong>Protocolo de Rotación de Credenciales (NIST SP 800-53 IA-5):</strong> Se invalidaron las claves por defecto en Cloud SQL y AWS RDS, generando secretos aleatorios de 32 caracteres inyectados en <code>otel-lab-secret</code>. Las variables IaC exigen inyección dinámica (<code>docs/SECURITY-CREDENTIALS-ROTATION.md</code>).</li>
+          <li><strong>Alarmas Gestionadas Activas:</strong> CloudWatch Alarms (<code>High CPU</code> y <code>Low Memory</code>) evaluando datos en estado <code>OK</code> con notificaciones SNS (<code>otel-aws-aiops-alerts</code>), y Cloud Monitoring Policy en GKE (<code>8026746357520380235</code>).</li>
         </ul>
       </div>
     </div>
@@ -926,7 +929,8 @@
         <span class="header-title">Hoja de Ruta Estratégica, Conclusiones y Referencias</span>
         <span class="header-doc">Módulo E · Requisitos E-04, E-05</span>
       </div>
-      <h2>1. Hoja de Ruta de Evolución a 3 Meses (Roadmap SRE)</h2>
+      <h2>1. Hoja de Ruta de Evolución a 3 Meses (Roadmap SRE Post-Laboratorio)</h2>
+      <p style="font-size:8pt; margin-bottom:6px;"><strong>Nota de Entrega:</strong> Las capacidades de <em>Service Mesh L7 (Istio v1.30.6) con Envoy sidecars, Circuit Breaking y mTLS</em>, así como el aprovisionamiento de <em>AWS RDS en us-east-2</em> y la <em>Auditoría de Vulnerabilidades CVE (Trivy)</em>, fueron <strong>adelantadas y completadas al 100% en la fase actual</strong>.</p>
       <table>
         <thead>
           <tr>
@@ -939,21 +943,21 @@
         <tbody>
           <tr>
             <td><strong>Mes 1</strong></td>
-            <td>Estabilización Multicloud e IaC Continua</td>
+            <td>Gobernanza GitOps e IaC Continua</td>
             <td>
-              &bull; Gestionar levantamiento de SCP en AWS para desplegar RDS nativo.<br>
-              &bull; Automatizar pipeline CI/CD con GitHub Actions (<code>terraform plan</code> con estado remoto).<br>
-              &bull; Alertas multi-ventana de consumo de presupuesto de error (burn-rate).
+              &bull; Implementar pipeline CI/CD con GitHub Actions y Terraform Cloud.<br>
+              &bull; Alertas multi-ventana de consumo de presupuesto de error (burn-rate).<br>
+              &bull; Integración de Secret Manager para rotación automatizada de credenciales.
             </td>
             <td>Cloud Platform Engineer & SRE Lead</td>
           </tr>
           <tr>
             <td><strong>Mes 2</strong></td>
-            <td>AIOps en Streaming y Service Mesh L7</td>
+            <td>AIOps en Streaming y Seguridad Automatizada</td>
             <td>
-              &bull; Migrar correlador a motor de streaming continuo (Pub/Sub + Cloud Run).<br>
-              &bull; Desplegar Cloud Service Mesh / Istio para telemetría mTLS automática.<br>
-              &bull; Dashboard unificado de seguridad integrando GCP SCC y AWS Security Hub.
+              &bull; Migrar motor correlador a streaming continuo (Pub/Sub / Kinesis).<br>
+              &bull; Políticas de auto-remediación L7 dinámicas con Envoy Filters.<br>
+              &bull; Conexión de API directa con Security Command Center y Security Hub.
             </td>
             <td>Observability Architect & SecOps</td>
           </tr>
