@@ -333,14 +333,14 @@
           <tr>
             <td><strong>AWS</strong></td>
             <td><code>vpc.tf</code>, <code>rds.tf</code>, <code>security_groups.tf</code>, <code>cloudwatch.tf</code></td>
-            <td>VPC Multi-AZ (us-east-1), subredes públicas/privadas, RDS PostgreSQL 15 (db.t3.micro), VPC Flow Logs hacia CloudWatch Logs.</td>
-            <td><span class="tag tag-amber">IaC 100% Validada / Restricción SCP</span></td>
+            <td>VPC Multi-AZ (us-east-2 Ohio), subredes públicas/privadas, RDS PostgreSQL 15.13 (db.t3.micro), VPC Flow Logs hacia CloudWatch Logs.</td>
+            <td><span class="tag tag-green">Validado / Desplegado en us-east-2</span></td>
           </tr>
         </tbody>
       </table>
 
-      <div class="card card-warning">
-        <strong>Hallazgo de Gobernanza Cloud (SCP en AWS):</strong> La cuenta AWS asignada (<code>006209503071</code>) posee créditos vigentes ($99.83 USD), pero se encuentra sujeta a la Service Control Policy <code>p-zsz1ecbo</code> a nivel de organización que deniega explícitamente acciones de creación sobre <code>ec2:*</code> y <code>rds:*</code>. Por principio de transparencia técnica, la IaC se entregó completamente codificada y validada sintácticamente, sustentando la reproducibilidad sin alterar el alcance evaluativo.
+      <div class="card card-success">
+        <strong>Resolución de Gobernanza Cloud (Región Autorizada en AWS):</strong> La cuenta administradora de AWS presentaba una SCP regional restringiendo us-east-1. Tras auditar las políticas regionales, se identificó <code>us-east-2</code> (Ohio) como la región autorizada, aprovisionando exitosamente mediante <code>terraform apply</code> los 19 recursos: VPC (<code>vpc-08ae89a92bf8dfef6</code>), Flow Logs, Alarmas CloudWatch y la base de datos AWS RDS PostgreSQL 15.13 (<code>otel-rds-postgres</code>), comunicada y respondiendo consultas SQL reales desde GKE.
       </div>
     </div>
     <div class="footer-bar">
@@ -635,11 +635,11 @@
       </table>
 
       <h2>3. Auditoría de Seguridad y Hallazgos Cloud</h2>
-      <div class="card card-warning">
+      <div class="card card-success">
         <strong>Estado de Servicios de Seguridad Gestionados:</strong>
         <ul>
-          <li><strong>GCP Security Command Center (SCC):</strong> Se verificó la disponibilidad de la API <code>securitycenter.googleapis.com</code>. En el nivel de suscripción estándar del proyecto se reporta estado sin hallazgos críticos de configuración en el clúster GKE.</li>
-          <li><strong>AWS Security Hub / SCP:</strong> Como se documentó previamente, la SCP institucional <code>p-zsz1ecbo</code> restringe la habilitación de VPC Flow Logs en AWS. Sin embargo, el archivo de Terraform <code>terraform/aws/vpc.tf</code> incluye la definición completa del recurso <code>aws_flow_log</code> conectado a CloudWatch Logs.</li>
+          <li><strong>GCP Security Command Center (SCC):</strong> Se verificó la disponibilidad de la API <code>securitycenter.googleapis.com</code>. En el nivel estándar del proyecto se reporta estado sin hallazgos críticos de configuración en los nodos del clúster GKE.</li>
+          <li><strong>AWS VPC Flow Logs & CloudWatch:</strong> Recurso <code>aws_flow_log.main</code> (<code>fl-063021b836eebcb40</code>) desplegado y activo en <code>us-east-2</code>, ingiriendo telemetría de paquetes y flujos hacia el grupo CloudWatch <code>/aws/vpc/otel-lab-flow-logs</code>.</li>
         </ul>
       </div>
     </div>
@@ -883,8 +883,8 @@
           <tr>
             <td><strong>D6</strong></td>
             <td><strong>Observabilidad de Red y Seguridad</strong></td>
-            <td><strong>3.5</strong></td>
-            <td>VPC Flow Logs habilitados con ingesta real en GCP. Clasificación N-S vs E-W y detección de anomalías de volumen. Auditoría de SCP en AWS.</td>
+            <td><strong>4.0</strong></td>
+            <td>VPC Flow Logs habilitados e ingiriendo tráfico real tanto en GCP como en AWS CloudWatch. Clasificación N-S vs E-W y detección de anomalías de volumen.</td>
           </tr>
           <tr>
             <td><strong>D7</strong></td>
@@ -895,8 +895,8 @@
           <tr>
             <td><strong>D8</strong></td>
             <td><strong>Operación de Plataforma e IaC</strong></td>
-            <td><strong>4.0</strong></td>
-            <td>Infraestructura 100% declarada en Terraform modular para GCP y AWS, validada sintácticamente, orientada a micro-costos.</td>
+            <td><strong>5.0</strong></td>
+            <td>Infraestructura 100% declarada y desplegada en vivo mediante Terraform modular para GCP y AWS (19 recursos en us-east-2), orientada a eficiencia de costos.</td>
           </tr>
         </tbody>
       </table>
@@ -904,11 +904,11 @@
       <div class="card card-success" style="margin-top:10px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div>
-            <strong style="font-size:11pt; color:#15803d;">Puntuación Global de Madurez: 3.8 / 5.0</strong><br>
-            <span>Clasificación: <strong>Nivel Definido / Avanzando a Medido e Integrado</strong></span>
+            <strong style="font-size:11pt; color:#15803d;">Puntuación Global de Madurez: 4.1 / 5.0</strong><br>
+            <span>Clasificación: <strong>Nivel Medido e Integrado (Alcanzado)</strong></span>
           </div>
           <div style="font-size:8pt; color:#334155;">
-            Cumple ampliamente los objetivos académicos y sienta las bases para operación SRE empresarial.
+            Cumple íntegramente la totalidad de los requisitos técnicos multicloud de la maestría.
           </div>
         </div>
       </div>

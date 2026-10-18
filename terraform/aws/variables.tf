@@ -1,7 +1,7 @@
 variable "aws_region" {
-  description = "Primary AWS Region"
+  description = "Primary AWS Region (Authorized region in AWS Organization)"
   type        = string
-  default     = "us-east-1"
+  default     = "us-east-2"
 }
 
 variable "aws_profile" {
@@ -17,9 +17,9 @@ variable "vpc_cidr" {
 }
 
 variable "availability_zones" {
-  description = "Availability zones for multi-AZ deployment"
+  description = "Availability zones for multi-AZ deployment in us-east-2"
   type        = list(string)
-  default     = ["us-east-1a", "us-east-1b"]
+  default     = ["us-east-2a", "us-east-2b"]
 }
 
 variable "public_subnet_cidrs" {

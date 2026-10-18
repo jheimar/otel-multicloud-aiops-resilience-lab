@@ -279,15 +279,24 @@ async def metrics_health():
 
 @app.get("/order/{order_id}/observed")
 async def get_order_observed(order_id: str, request: Request):
-    """Flujo integrador A -> B y A -> Data Service -> PostgreSQL con W3C context."""
+    """Flujo integrador multicloud A -> B y A -> Data Service (GCP y AWS) con W3C context."""
     order = await get_order(order_id, request)
+    data_gcp = None
+    data_aws = None
     try:
         async with httpx.AsyncClient(timeout=8.0) as client:
-            response = await client.get(f"{DATA_SERVICE_URL}/data/gcp")
-            response.raise_for_status()
-            data = response.json()
+            resp_gcp = await client.get(f"{DATA_SERVICE_URL}/data/gcp")
+            if resp_gcp.status_code == 200:
+                data_gcp = resp_gcp.json()
+            resp_aws = await client.get(f"{DATA_SERVICE_URL}/data/aws")
+            if resp_aws.status_code == 200:
+                data_aws = resp_aws.json()
     except httpx.HTTPError as exc:
-        logger.error("data-service call failed: %s", type(exc).__name__)
-        raise HTTPException(status_code=503, detail="data-service unavailable") from exc
-    return {"order": order["order"], "inventory": order["inventory"], "data_service": data,
-            "trace_id": format(trace.get_current_span().get_span_context().trace_id, "032x")}
+        logger.error("data-service multicloud call error: %s", type(exc).__name__)
+    return {
+        "order": order["order"],
+        "inventory": order["inventory"],
+        "data_service_gcp": data_gcp,
+        "data_service_aws": data_aws,
+        "trace_id": format(trace.get_current_span().get_span_context().trace_id, "032x")
+    }

@@ -33,6 +33,9 @@ spec:
             - name: GCP_DATABASE_URL
               valueFrom:
                 secretKeyRef: {name: otel-lab-secret, key: database-url}
+            - name: AWS_DATABASE_URL
+              valueFrom:
+                secretKeyRef: {name: otel-lab-secret, key: aws-database-url}
           readinessProbe:
             httpGet: {path: /ready, port: 8002}
             initialDelaySeconds: 5
