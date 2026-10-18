@@ -24,6 +24,9 @@ SERVICE = "data-service"
 OTLP = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://otel-collector.otel-lab.svc.cluster.local:4317")
 ENV = os.getenv("DEPLOYMENT_ENVIRONMENT", "sandbox")
 FAULT_RATE = float(os.getenv("FAULT_RATE", "0"))
+FAULT_DELAY_MS = int(os.getenv("FAULT_DELAY_MS", "250"))
+if not (0 <= FAULT_DELAY_MS <= 5000):
+    raise ValueError("FAULT_DELAY_MS must be between 0 and 5000")
 if not (0.0 <= FAULT_RATE <= 1.0):
     raise ValueError("FAULT_RATE must be between 0 and 1")
 # Fallos únicamente para esta ruta y al habilitarse explícitamente.
@@ -86,7 +89,12 @@ def read_data(backend: str):
     labels = {"backend": backend, "method": "GET", "route": "/data/{backend}"}
     try:
         if FAULT_ENABLED and random.random() < FAULT_RATE:
-            logger.warning("Injected sandbox HTTP fault for backend=%s", backend)
+            with trace.get_tracer(SERVICE).start_as_current_span(
+                "chaos.http_fault", attributes={"chaos.type": "http-503", "chaos.delay_ms": FAULT_DELAY_MS}
+            ) as fault_span:
+                time.sleep(FAULT_DELAY_MS / 1000.0)
+                fault_span.set_status(Status(StatusCode.ERROR, "controlled sandbox fault"))
+                logger.warning("Injected sandbox HTTP fault for backend=%s", backend)
             raise HTTPException(status_code=503, detail="controlled sandbox fault")
 
         dsn = os.getenv("GCP_DATABASE_URL" if backend == "gcp" else "AWS_DATABASE_URL")

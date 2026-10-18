@@ -33,6 +33,7 @@ from opentelemetry.propagate import inject
 # ── Configuración desde variables de entorno ─────────────────────────────────
 OTEL_ENDPOINT   = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://otel-collector:4317")
 SERVICE_B_URL   = os.getenv("SERVICE_B_URL", "http://service-b:8001")
+DATA_SERVICE_URL = os.getenv("DATA_SERVICE_URL", "http://data-service.otel-lab.svc.cluster.local:8002")
 DB_DSN          = os.getenv("DATABASE_URL", "postgresql://app:secret@postgres:5432/appdb")
 PROMETHEUS_PORT = int(os.getenv("PROMETHEUS_PORT", "9090"))
 ENV             = os.getenv("ENVIRONMENT", "production")
@@ -274,3 +275,19 @@ async def metrics_health():
         "prometheus_port": PROMETHEUS_PORT,
         "service_b_url": SERVICE_B_URL,
     }
+
+
+@app.get("/order/{order_id}/observed")
+async def get_order_observed(order_id: str, request: Request):
+    """Flujo integrador A -> B y A -> Data Service -> PostgreSQL con W3C context."""
+    order = await get_order(order_id, request)
+    try:
+        async with httpx.AsyncClient(timeout=8.0) as client:
+            response = await client.get(f"{DATA_SERVICE_URL}/data/gcp")
+            response.raise_for_status()
+            data = response.json()
+    except httpx.HTTPError as exc:
+        logger.error("data-service call failed: %s", type(exc).__name__)
+        raise HTTPException(status_code=503, detail="data-service unavailable") from exc
+    return {"order": order["order"], "inventory": order["inventory"], "data_service": data,
+            "trace_id": format(trace.get_current_span().get_span_context().trace_id, "032x")}

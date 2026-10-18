@@ -1,5 +1,6 @@
-# Requiere Secret 'data-service-db' (GCP_DATABASE_URL, AWS_DATABASE_URL) en otel-lab.
-# Crear secretos de manera segura fuera de Git y nunca versionarlos.
+# Reutiliza el secreto existente otel-lab-secret de PostgreSQL GKE como backend temporal de prueba.
+# NO es Cloud SQL. AWS_DATABASE_URL queda ausente hasta habilitación autorizada de RDS.
+# No versionar secretos ni estados Terraform.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,7 +18,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: data-service
-          image: REPLACE_WITH_IMAGE_FROM_REGISTRY
+          image: us-central1-docker.pkg.dev/project-138a5e79-5342-4c60-94f/otel-chaos-gameday/data-service:0.3.0
           imagePullPolicy: IfNotPresent
           ports: [{name: http, containerPort: 8002}]
           env:
@@ -31,10 +32,7 @@ spec:
               value: "0.10"
             - name: GCP_DATABASE_URL
               valueFrom:
-                secretKeyRef: {name: data-service-db, key: GCP_DATABASE_URL}
-            - name: AWS_DATABASE_URL
-              valueFrom:
-                secretKeyRef: {name: data-service-db, key: AWS_DATABASE_URL}
+                secretKeyRef: {name: otel-lab-secret, key: database-url}
           readinessProbe:
             httpGet: {path: /ready, port: 8002}
             initialDelaySeconds: 5
