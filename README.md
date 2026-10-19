@@ -11,8 +11,6 @@ Repositorio oficial del laboratorio integrador de observabilidad avanzada, detec
 | Entregable | Ubicación en el Repositorio | Descripción / Estado |
 |---|---|---|
 | **ENT-01: Repositorio GitHub con Toda la IaC** | [`terraform/gcp`](terraform/gcp), [`terraform/aws`](terraform/aws), [`services/`](services/), [`kubernetes/`](kubernetes/) | **100 % Validado.** Módulos completos de Terraform para GCP y AWS validados con `terraform validate` y `terraform fmt`. Código de los 3 microservicios, manifiestos OTel y Chaos. |
-| **ENT-02: Video de Demostración en Vivo** | [`docs/GUION-VIDEO.md`](docs/GUION-VIDEO.md) | **Guion detallado minuto a minuto (6-8 min)** con comandos, URLs de Jaeger/Grafana y libreto paso a paso para la grabación. |
-| **ENT-03: Reporte Ejecutivo de 10 Páginas** | [`docs/REPORTE_EJECUTIVO_OBSERVABILIDAD_10_PAGINAS.pdf`](docs/REPORTE_EJECUTIVO_OBSERVABILIDAD_10_PAGINAS.pdf) | **PDF compilado de exactamente 10 páginas** con arquitectura completa, evidencias de los 5 módulos (A–E), Blueprint de 8 dominios y Roadmap. Fuente HTML en [`docs/reporte_ejecutivo_10_paginas.html`](docs/reporte_ejecutivo_10_paginas.html). |
 
 ---
 
